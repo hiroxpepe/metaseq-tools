@@ -45,8 +45,34 @@ namespace StudioMeowToon.PoseSetView {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Event handler
 
-        private void buttonRead_Click(object sender, EventArgs e) {
-            context.Exec();
+        private async void buttonFileDrop_DragDrop(object sender, DragEventArgs e) {
+            if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy
+                && e.Data.GetDataPresent(DataFormats.FileDrop, true)) {
+                var _data = e.Data.GetData(DataFormats.FileDrop, true) as string[]; // 実際にデータを取り出す
+                if (_data != null) {
+                    foreach (string _filePath in _data) {
+                        await Task.Run(() => context.Read(_filePath)); // 処理実行
+                    }
+                }
+            }
+        }
+
+        private void buttonFileDrop_DragEnter(object sender, DragEventArgs e) {
+            if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy
+                 && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: バリデーター
+                e.Effect = DragDropEffects.Copy;
+            } else {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void buttonFileDrop_DragOver(object sender, DragEventArgs e) {
+            if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy
+                && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: バリデーター
+                e.Effect = DragDropEffects.Copy;
+            } else {
+                e.Effect = DragDropEffects.None;
+            }
         }
     }
 }

@@ -23,25 +23,28 @@
         /// コード エディターで変更しないでください。
         /// </summary>
         private void InitializeComponent() {
-            this.buttonRead = new System.Windows.Forms.Button();
+            this.buttonFileDrop = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // buttonRead
+            // buttonFileDrop
             // 
-            this.buttonRead.Location = new System.Drawing.Point(12, 12);
-            this.buttonRead.Name = "buttonRead";
-            this.buttonRead.Size = new System.Drawing.Size(75, 23);
-            this.buttonRead.TabIndex = 0;
-            this.buttonRead.Text = "Read";
-            this.buttonRead.UseVisualStyleBackColor = true;
-            this.buttonRead.Click += new System.EventHandler(this.buttonRead_Click);
+            this.buttonFileDrop.AllowDrop = true;
+            this.buttonFileDrop.Location = new System.Drawing.Point(12, 12);
+            this.buttonFileDrop.Name = "buttonFileDrop";
+            this.buttonFileDrop.Size = new System.Drawing.Size(107, 55);
+            this.buttonFileDrop.TabIndex = 0;
+            this.buttonFileDrop.Text = "Drop Files here!";
+            this.buttonFileDrop.UseVisualStyleBackColor = true;
+            this.buttonFileDrop.DragDrop += new System.Windows.Forms.DragEventHandler(this.buttonFileDrop_DragDrop);
+            this.buttonFileDrop.DragEnter += new System.Windows.Forms.DragEventHandler(this.buttonFileDrop_DragEnter);
+            this.buttonFileDrop.DragOver += new System.Windows.Forms.DragEventHandler(this.buttonFileDrop_DragOver);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 49);
-            this.Controls.Add(this.buttonRead);
+            this.ClientSize = new System.Drawing.Size(291, 83);
+            this.Controls.Add(this.buttonFileDrop);
             this.Name = "FormMain";
             this.Text = "Main";
             this.ResumeLayout(false);
@@ -50,7 +53,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button buttonRead;
+        private System.Windows.Forms.Button buttonFileDrop;
     }
 }
 

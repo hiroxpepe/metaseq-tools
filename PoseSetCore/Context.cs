@@ -28,28 +28,22 @@ namespace StudioMeowToon.PoseSetCore {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
 
-        const string xmlFile = @".\data\pose-set.xml";
+        const string xmlFile = @".\data\pose-set_24_30.xml";
 
         List<KeyFrame> keyFrameList;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // public Methods [verb]
 
-        public void Read() {
+        public void Read(string filePath) {
             var _serializer = new XmlSerializer(typeof(PoseSet));
             PoseSet _result;
-            var _settings = new XmlReaderSettings() {
-                CheckCharacters = false,
-            };
-            using (var _streamReader = new StreamReader(xmlFile, Encoding.UTF8)) {
+            var _settings = new XmlReaderSettings() { CheckCharacters = false, };
+            using (var _streamReader = new StreamReader(filePath, Encoding.UTF8)) {
                 using (var _xmlReader = XmlReader.Create(_streamReader, _settings)) {
                     _result = (PoseSet) _serializer.Deserialize(_xmlReader);
                 }
             }
-        }
-
-        public void Exec() {
-            Read();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,6 +59,12 @@ namespace StudioMeowToon.PoseSetCore {
         }
 
         class RateAndPosition {
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            // Constructor
+
+            public RateAndPosition(string filePath) {
+            }
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             // Properties [noun, adjectives]
