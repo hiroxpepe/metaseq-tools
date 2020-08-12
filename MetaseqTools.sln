@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30330.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoseSetCore", "PoseSetCore\PoseSetCore.csproj", "{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoseSetView", "PoseSetView\PoseSetView.csproj", "{BA446163-509F-4B30-9F0D-201C2A293EC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA446163-509F-4B30-9F0D-201C2A293EC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA446163-509F-4B30-9F0D-201C2A293EC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA446163-509F-4B30-9F0D-201C2A293EC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA446163-509F-4B30-9F0D-201C2A293EC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7556C994-A6A5-4362-B4B3-AFB349993192}
+	EndGlobalSection
+EndGlobal
