@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 
 *vs.code-workspace
+data
