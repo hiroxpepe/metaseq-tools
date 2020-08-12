@@ -1,4 +1,4 @@
-﻿namespace PoseSetView {
+﻿namespace StudioMeowToon.PoseSetView {
     partial class FormMain {
         /// <summary>
         /// 必要なデザイナー変数です。

@@ -7,7 +7,7 @@
     <ProjectGuid>{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoseSetCore</RootNamespace>
+    <RootNamespace>StudioMeowToon.PoseSetCore</RootNamespace>
     <AssemblyName>PoseSetCore</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
