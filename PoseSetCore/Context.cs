@@ -28,22 +28,30 @@ namespace StudioMeowToon.PoseSetCore {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
 
-        const string xmlFile = @".\data\pose-set_24_30.xml";
-
         List<KeyFrame> keyFrameList;
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        // Constructor
+
+        public Context() {
+            keyFrameList = new List<KeyFrame>();
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // public Methods [verb]
 
         public void Read(string filePath) {
             var _serializer = new XmlSerializer(typeof(PoseSet));
-            PoseSet _result;
+            PoseSet _poseSet;
+            RateAndPosition _rateAndPosition = new RateAndPosition(filePath);
             var _settings = new XmlReaderSettings() { CheckCharacters = false, };
             using (var _streamReader = new StreamReader(filePath, Encoding.UTF8)) {
                 using (var _xmlReader = XmlReader.Create(_streamReader, _settings)) {
-                    _result = (PoseSet) _serializer.Deserialize(_xmlReader);
+                    _poseSet = (PoseSet) _serializer.Deserialize(_xmlReader);
                 }
             }
+            KeyFrame _keyFrame = new KeyFrame(_rateAndPosition, _poseSet);
+            keyFrameList.Add(_keyFrame);
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,10 +60,18 @@ namespace StudioMeowToon.PoseSetCore {
         class KeyFrame {
 
             ///////////////////////////////////////////////////////////////////////////////////////////
+            // Constructor
+
+            public KeyFrame(RateAndPosition rateAndPosition, PoseSet poseSet) {
+                RateAndPosition = rateAndPosition;
+                PoseSet = poseSet;
+            }
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
             // Properties [noun, adjectives]
 
-            public RateAndPosition RateAndPosition { get; set; }
-            public PoseSet PoseSet { get; set; }
+            public RateAndPosition RateAndPosition { get; }
+            public PoseSet PoseSet { get; }
         }
 
         class RateAndPosition {
@@ -64,13 +80,16 @@ namespace StudioMeowToon.PoseSetCore {
             // Constructor
 
             public RateAndPosition(string filePath) {
+                string _fileName = filePath.Split('\\').Last();
+                Rate = int.Parse(_fileName.Split('_')[1]);
+                Position = int.Parse(_fileName.Split('_')[2].Replace(".xml", ""));
             }
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             // Properties [noun, adjectives]
 
-            public int Rate { get; set; }
-            public int Position { get; set; }
+            public int Rate { get; }
+            public int Position { get; }
         }
 
     }
