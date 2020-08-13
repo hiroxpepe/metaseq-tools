@@ -31,7 +31,7 @@
             this.buttonFileDrop.AllowDrop = true;
             this.buttonFileDrop.Location = new System.Drawing.Point(12, 12);
             this.buttonFileDrop.Name = "buttonFileDrop";
-            this.buttonFileDrop.Size = new System.Drawing.Size(107, 55);
+            this.buttonFileDrop.Size = new System.Drawing.Size(183, 55);
             this.buttonFileDrop.TabIndex = 0;
             this.buttonFileDrop.Text = "Drop Files here!";
             this.buttonFileDrop.UseVisualStyleBackColor = true;
@@ -43,8 +43,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 83);
+            this.ClientSize = new System.Drawing.Size(207, 83);
             this.Controls.Add(this.buttonFileDrop);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormMain";
             this.Text = "Main";
             this.ResumeLayout(false);

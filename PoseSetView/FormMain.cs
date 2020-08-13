@@ -11,13 +11,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using StudioMeowToon.PoseSetCore;
@@ -48,11 +41,12 @@ namespace StudioMeowToon.PoseSetView {
         private async void buttonFileDrop_DragDrop(object sender, DragEventArgs e) {
             if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy
                 && e.Data.GetDataPresent(DataFormats.FileDrop, true)) {
-                var _data = e.Data.GetData(DataFormats.FileDrop, true) as string[]; // 実際にデータを取り出す
+                var _data = e.Data.GetData(DataFormats.FileDrop, true) as string[];
                 if (_data != null) {
                     foreach (string _filePath in _data) {
-                        await Task.Run(() => context.Read(_filePath)); // 処理実行
+                        await Task.Run(() => context.Read(_filePath));
                     }
+                    await Task.Run(() => context.Write());
                 }
             }
         }

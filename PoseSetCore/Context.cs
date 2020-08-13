@@ -42,16 +42,32 @@ namespace StudioMeowToon.PoseSetCore {
 
         public void Read(string filePath) {
             var _serializer = new XmlSerializer(typeof(PoseSet));
-            PoseSet _poseSet;
-            RateAndPosition _rateAndPosition = new RateAndPosition(filePath);
             var _settings = new XmlReaderSettings() { CheckCharacters = false, };
             using (var _streamReader = new StreamReader(filePath, Encoding.UTF8)) {
                 using (var _xmlReader = XmlReader.Create(_streamReader, _settings)) {
-                    _poseSet = (PoseSet) _serializer.Deserialize(_xmlReader);
+                    keyFrameList.Add(
+                        new KeyFrame(
+                            new RateAndPosition(filePath),
+                            (PoseSet) _serializer.Deserialize(_xmlReader)
+                        )
+                    );
                 }
             }
-            KeyFrame _keyFrame = new KeyFrame(_rateAndPosition, _poseSet);
-            keyFrameList.Add(_keyFrame);
+        }
+
+        public void Write() {
+            string _buff = "import bpy\n\n";
+            keyFrameList.ForEach(_keyFrame => {
+                _keyFrame.PoseSet.Pose.ToList().ForEach(_pose => {
+                    _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
+                    _buff += $"ob.rotation_mode = 'XYZ'\n";
+                    _buff += $"ob.rotation_euler.x = {_pose.rotB}\n";
+                    _buff += $"ob.rotation_euler.y = {_pose.rotH}\n";
+                    _buff += $"ob.rotation_euler.z = {_pose.rotP}\n";
+                    _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position})\n\n";
+                });
+            });
+            File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/metaseq_animation.py", _buff);
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
