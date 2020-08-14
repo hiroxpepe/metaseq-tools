@@ -28,8 +28,6 @@ namespace StudioMeowToon.PoseSetCore {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
 
-        const string ROTATION_MODE = "ZXY"; // 軸の回転の順番:おそらくメタセコの仕様
-
         List<KeyFrame> keyFrameList;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,12 +63,12 @@ namespace StudioMeowToon.PoseSetCore {
                     var _euler = getRotationEuler(_pose);
                     if (_euler != null) {
                         _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
-                        _buff += $"ob.rotation_mode = '{ROTATION_MODE}'\n";
+                        _buff += $"ob.rotation_mode = '{_euler.Mode}'\n";
                         _buff += $"ob.rotation_euler.x = {_euler.X}\n";
                         _buff += $"ob.rotation_euler.y = {_euler.Y}\n";
                         _buff += $"ob.rotation_euler.z = {_euler.Z}\n";
                         _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position}, group = '{_pose.name}')\n\n";
-                        }
+                    }
                 });
                 _fps = _keyFrame.RateAndPosition.Rate;
                 _frame_end = _keyFrame.RateAndPosition.Position;
@@ -92,11 +90,13 @@ namespace StudioMeowToon.PoseSetCore {
                 _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Y = toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.Mode = "ZXY";
                 return _euler;
             } else if (_name.Equals("LeftUpperLeg") || _name.Equals("RightUpperLeg")) {
                 _euler.X = -toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.Mode = "ZXY";
                 return _euler;
             } else if (_name.Equals("LeftLowerLeg") || _name.Equals("LeftFoot") ||
                 _name.Equals("LeftToeBase") || _name.Equals("LeftToeEnd") ||
@@ -105,6 +105,7 @@ namespace StudioMeowToon.PoseSetCore {
                 _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Z = -toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.Mode = "ZXY";
                 return _euler;
             } else if (_name.Equals("LeftShoulder") || _name.Equals("LeftUpperArm") ||
                 _name.Equals("LeftLowerArm") || _name.Equals("LeftHand") ||
@@ -114,6 +115,7 @@ namespace StudioMeowToon.PoseSetCore {
                 _euler.X = -toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Y = toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.Mode = "ZYX";
                 return _euler;
             } else if (_name.Equals("RightShoulder") || _name.Equals("RightUpperArm") ||
                 _name.Equals("RightLowerArm") || _name.Equals("RightHand") ||
@@ -123,6 +125,7 @@ namespace StudioMeowToon.PoseSetCore {
                 _euler.X = toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Y = -toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.Mode = "ZYX";
                 return _euler;
             }
             return null;
@@ -143,6 +146,7 @@ namespace StudioMeowToon.PoseSetCore {
             public double X { get; set; }
             public double Y { get; set; }
             public double Z { get; set; }
+            public string Mode { get; set; }
         }
 
         class KeyFrame {
