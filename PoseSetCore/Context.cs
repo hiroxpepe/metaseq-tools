@@ -59,6 +59,7 @@ namespace StudioMeowToon.PoseSetCore {
 
         public void Write() {
             string _buff = "import bpy\n\n";
+            int _fps = 0, _frame_end = 0;
             keyFrameList.ForEach(_keyFrame => {
                 _keyFrame.PoseSet.Pose.ToList().ForEach(_pose => {
                     var _euler = getRotationEuler(_pose);
@@ -71,7 +72,11 @@ namespace StudioMeowToon.PoseSetCore {
                         _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position}, group = '{_pose.name}')\n\n";
                         }
                 });
+                _fps = _keyFrame.RateAndPosition.Rate;
+                _frame_end = _keyFrame.RateAndPosition.Position;
             });
+            _buff += $"bpy.context.scene.render.fps = {_fps}\n";
+            _buff += $"bpy.data.scenes['Scene'].frame_end = {_frame_end}\n";
             File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/metaseq_animation.py", _buff);
         }
 
