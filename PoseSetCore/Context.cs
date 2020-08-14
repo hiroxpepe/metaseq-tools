@@ -60,73 +60,17 @@ namespace StudioMeowToon.PoseSetCore {
         public void Write() {
             string _buff = "import bpy\n\n";
             keyFrameList.ForEach(_keyFrame => {
-
-                _keyFrame.PoseSet.Pose.ToList().Where(_pose =>
-                    _pose.name.Equals("Hips") || _pose.name.Equals("Spine") ||
-                    _pose.name.Equals("UpperChest") || _pose.name.Equals("Neck") ||
-                    _pose.name.Equals("Head") || _pose.name.Equals("Head_end"))
-                    .ToList().ForEach(_pose => {
+                _keyFrame.PoseSet.Pose.ToList().ForEach(_pose => {
+                    var _euler = getRotationEuler(_pose);
+                    if (_euler != null) {
                         _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
                         _buff += $"ob.rotation_mode = '{ROTATION_MODE}'\n";
-                        _buff += $"ob.rotation_euler.x = {toRadian(Decimal.ToDouble(_pose.rotP))}\n";
-                        _buff += $"ob.rotation_euler.y = {toRadian(Decimal.ToDouble(_pose.rotH))}\n";
-                        _buff += $"ob.rotation_euler.z = {toRadian(Decimal.ToDouble(_pose.rotB))}\n";
-                        _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position})\n\n";
-                    });
-
-                _keyFrame.PoseSet.Pose.ToList().Where(_pose =>
-                    _pose.name.Equals("LeftUpperLeg") || _pose.name.Equals("RightUpperLeg"))
-                    .ToList().ForEach(_pose => {
-                        _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
-                        _buff += $"ob.rotation_mode = '{ROTATION_MODE}'\n";
-                        _buff += $"ob.rotation_euler.x = {-toRadian(Decimal.ToDouble(_pose.rotP))}\n";
-                        _buff += $"ob.rotation_euler.y = {-toRadian(Decimal.ToDouble(_pose.rotH))}\n";
-                        _buff += $"ob.rotation_euler.z = {toRadian(Decimal.ToDouble(_pose.rotB))}\n";
-                        _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position})\n\n";
-                    });
-
-                _keyFrame.PoseSet.Pose.ToList().Where(_pose =>
-                    _pose.name.Equals("LeftLowerLeg") || _pose.name.Equals("LeftFoot") ||
-                    _pose.name.Equals("LeftToeBase") || _pose.name.Equals("LeftToeEnd") ||
-                    _pose.name.Equals("RightLowerLeg") || _pose.name.Equals("RightFoot") ||
-                    _pose.name.Equals("RightToeBase") || _pose.name.Equals("RightToeEnd"))
-                    .ToList().ForEach(_pose => {
-                        _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
-                        _buff += $"ob.rotation_mode = '{ROTATION_MODE}'\n";
-                        _buff += $"ob.rotation_euler.x = {toRadian(Decimal.ToDouble(_pose.rotP))}\n";
-                        _buff += $"ob.rotation_euler.y = {-toRadian(Decimal.ToDouble(_pose.rotH))}\n";
-                        _buff += $"ob.rotation_euler.z = {-toRadian(Decimal.ToDouble(_pose.rotB))}\n";
-                        _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position})\n\n";
-                    });
-
-                _keyFrame.PoseSet.Pose.ToList().Where(_pose =>
-                    _pose.name.Equals("LeftShoulder") || _pose.name.Equals("LeftUpperArm") ||
-                    _pose.name.Equals("LeftLowerArm") || _pose.name.Equals("LeftHand") ||
-                    _pose.name.Equals("LeftThumbProximal") || _pose.name.Equals("LeftIndexProximal") ||
-                    _pose.name.Equals("LeftMiddleProximal") || _pose.name.Equals("LeftRingProximal") || _pose.name.Equals("LeftLittleProximal"))
-                    .ToList().ForEach(_pose => {
-                        _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
-                        _buff += $"ob.rotation_mode = '{ROTATION_MODE}'\n";
-                        _buff += $"ob.rotation_euler.x = {-toRadian(Decimal.ToDouble(_pose.rotH))}\n";
-                        _buff += $"ob.rotation_euler.y = {toRadian(Decimal.ToDouble(_pose.rotP))}\n";
-                        _buff += $"ob.rotation_euler.z = {toRadian(Decimal.ToDouble(_pose.rotB))}\n";
-                        _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position})\n\n";
-                    });
-
-                _keyFrame.PoseSet.Pose.ToList().Where(_pose =>
-                    _pose.name.Equals("RightShoulder") || _pose.name.Equals("RightUpperArm") ||
-                    _pose.name.Equals("RightLowerArm") || _pose.name.Equals("RightHand") ||
-                    _pose.name.Equals("RightThumbProximal") || _pose.name.Equals("RightIndexProximal") ||
-                    _pose.name.Equals("RightMiddleProximal") || _pose.name.Equals("RightRingProximal") || _pose.name.Equals("RightLittleProximal"))
-                    .ToList().ForEach(_pose => {
-                        _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
-                        _buff += $"ob.rotation_mode = '{ROTATION_MODE}'\n";
-                        _buff += $"ob.rotation_euler.x = {toRadian(Decimal.ToDouble(_pose.rotH))}\n";
-                        _buff += $"ob.rotation_euler.y = {-toRadian(Decimal.ToDouble(_pose.rotP))}\n";
-                        _buff += $"ob.rotation_euler.z = {toRadian(Decimal.ToDouble(_pose.rotB))}\n";
-                        _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position})\n\n";
-                    });
-
+                        _buff += $"ob.rotation_euler.x = {_euler.X}\n";
+                        _buff += $"ob.rotation_euler.y = {_euler.Y}\n";
+                        _buff += $"ob.rotation_euler.z = {_euler.Z}\n";
+                        _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position}, group = '{_pose.name}')\n\n";
+                        }
+                });
             });
             File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/metaseq_animation.py", _buff);
         }
@@ -134,12 +78,67 @@ namespace StudioMeowToon.PoseSetCore {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // private Methods [verb]
 
+        RotationEuler getRotationEuler(PoseSetPose pose) {
+            RotationEuler _euler = new RotationEuler();
+            string _name = pose.name;
+            if (_name.Equals("Hips") || _name.Equals("Spine") ||
+                _name.Equals("UpperChest") || _name.Equals("Neck") ||
+                _name.Equals("Head") || _name.Equals("Head_end")) {
+                _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
+                _euler.Y = toRadian(Decimal.ToDouble(pose.rotH));
+                _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                return _euler;
+            } else if (_name.Equals("LeftUpperLeg") || _name.Equals("RightUpperLeg")) {
+                _euler.X = -toRadian(Decimal.ToDouble(pose.rotP));
+                _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
+                _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                return _euler;
+            } else if (_name.Equals("LeftLowerLeg") || _name.Equals("LeftFoot") ||
+                _name.Equals("LeftToeBase") || _name.Equals("LeftToeEnd") ||
+                _name.Equals("RightLowerLeg") || _name.Equals("RightFoot") ||
+                _name.Equals("RightToeBase") || _name.Equals("RightToeEnd")) {
+                _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
+                _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
+                _euler.Z = -toRadian(Decimal.ToDouble(pose.rotB));
+                return _euler;
+            } else if (_name.Equals("LeftShoulder") || _name.Equals("LeftUpperArm") ||
+                _name.Equals("LeftLowerArm") || _name.Equals("LeftHand") ||
+                _name.Equals("LeftThumbProximal") || _name.Equals("LeftIndexProximal") ||
+                _name.Equals("LeftMiddleProximal") || _name.Equals("LeftRingProximal") || 
+                _name.Equals("LeftLittleProximal")) {
+                _euler.X = -toRadian(Decimal.ToDouble(pose.rotH));
+                _euler.Y = toRadian(Decimal.ToDouble(pose.rotP));
+                _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                return _euler;
+            } else if (_name.Equals("RightShoulder") || _name.Equals("RightUpperArm") ||
+                _name.Equals("RightLowerArm") || _name.Equals("RightHand") ||
+                _name.Equals("RightThumbProximal") || _name.Equals("RightIndexProximal") ||
+                _name.Equals("RightMiddleProximal") || _name.Equals("RightRingProximal") || 
+                _name.Equals("RightLittleProximal")) {
+                _euler.X = toRadian(Decimal.ToDouble(pose.rotH));
+                _euler.Y = -toRadian(Decimal.ToDouble(pose.rotP));
+                _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                return _euler;
+            }
+            return null;
+        }
+
         double toRadian(double angle) {
             return (double) (angle * Math.PI / 180); // Blender のスクリプトはラジアンで設定
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // inner Classes
+
+        class RotationEuler {
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            // Properties [noun, adjectives]
+
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }
+        }
 
         class KeyFrame {
 
