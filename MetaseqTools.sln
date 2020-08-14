@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaseqPoseToBpyCore", "Met
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaseqPoseToBpy", "MetaseqPoseToBpy\MetaseqPoseToBpy.csproj", "{BA446163-509F-4B30-9F0D-201C2A293EC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VNumPad", "VNumPad\VNumPad.csproj", "{B081665A-3E93-448E-BBEB-460DB5827F31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BA446163-509F-4B30-9F0D-201C2A293EC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA446163-509F-4B30-9F0D-201C2A293EC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA446163-509F-4B30-9F0D-201C2A293EC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B081665A-3E93-448E-BBEB-460DB5827F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B081665A-3E93-448E-BBEB-460DB5827F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B081665A-3E93-448E-BBEB-460DB5827F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B081665A-3E93-448E-BBEB-460DB5827F31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
