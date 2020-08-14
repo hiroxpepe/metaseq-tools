@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BA446163-509F-4B30-9F0D-201C2A293EC4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>StudioMeowToon.PoseSetView</RootNamespace>
-    <AssemblyName>PoseSetView</AssemblyName>
+    <RootNamespace>MetaseqPoseToBpy</RootNamespace>
+    <AssemblyName>MetaseqPoseToBpy</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -81,9 +81,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoseSetCore\PoseSetCore.csproj">
+    <ProjectReference Include="..\MetaseqPoseToBpyCore\MetaseqPoseToBpyCore.csproj">
       <Project>{c723947d-4a99-4d31-a3cf-cf2e618cb1ad}</Project>
-      <Name>PoseSetCore</Name>
+      <Name>MetaseqPoseToBpyCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

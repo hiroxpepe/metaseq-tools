@@ -13,9 +13,10 @@
 
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using StudioMeowToon.PoseSetCore;
 
-namespace StudioMeowToon.PoseSetView {
+using MetaseqPoseToBpyCore;
+
+namespace MetaseqPoseToBpy {
     /// <summary>
     /// @author h.adachi
     /// </summary>
