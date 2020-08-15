@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaseqPoseToBpy", "Metaseq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumPad", "NumPad\NumPad.csproj", "{B081665A-3E93-448E-BBEB-460DB5827F31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PadLib", "PadLib\PadLib.csproj", "{B3860461-E256-412C-8A3C-A3E6139AAEFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B081665A-3E93-448E-BBEB-460DB5827F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B081665A-3E93-448E-BBEB-460DB5827F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B081665A-3E93-448E-BBEB-460DB5827F31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3860461-E256-412C-8A3C-A3E6139AAEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3860461-E256-412C-8A3C-A3E6139AAEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3860461-E256-412C-8A3C-A3E6139AAEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3860461-E256-412C-8A3C-A3E6139AAEFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
