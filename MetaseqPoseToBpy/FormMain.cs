@@ -14,7 +14,7 @@
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using MetaseqPoseToBpyCore;
+using MetaseqPoseToBpyLib;
 
 namespace MetaseqPoseToBpy {
     /// <summary>

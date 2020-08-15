@@ -19,7 +19,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace MetaseqPoseToBpyCore {
+namespace MetaseqPoseToBpyLib {
     /// <summary>
     /// @author h.adachi
     /// </summary>

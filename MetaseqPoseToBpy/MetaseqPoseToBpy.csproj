@@ -81,9 +81,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MetaseqPoseToBpyCore\MetaseqPoseToBpyCore.csproj">
+    <ProjectReference Include="..\MetaseqPoseToBpyLib\MetaseqPoseToBpyLib.csproj">
       <Project>{c723947d-4a99-4d31-a3cf-cf2e618cb1ad}</Project>
-      <Name>MetaseqPoseToBpyCore</Name>
+      <Name>MetaseqPoseToBpyLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
