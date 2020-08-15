@@ -11,7 +11,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
+using System.Threading;
 using System.Runtime.InteropServices;
 
 namespace PadLib {
@@ -27,6 +27,7 @@ namespace PadLib {
 
         private const int INPUT_KEYBOARD = 1;
         private const int KEYEVENTF_KEYDOWN = 0x0;
+        private const int KEYEVENTF_KEYUP = 0x2;
         private const int KEYEVENTF_EXTENDEDKEY = 0x1;
 
         #endregion
@@ -46,6 +47,142 @@ namespace PadLib {
                 },
             };
             SendInput(1, ref input, Marshal.SizeOf(input));
+            Thread.Sleep(100); // wait
+            input.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input, Marshal.SizeOf(input));
+        }
+
+        public static void SendKeyWithShift(int key, bool isExtend = false) {
+            INPUT input0 = new INPUT {
+                type = INPUT_KEYBOARD,
+                ki = new KEYBDINPUT() {
+                    wVk = (short) 0x10, // VK_SHIFT
+                    wScan = 0,
+                    dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN,
+                    time = 0,
+                    dwExtraInfo = 0
+                },
+            };
+            INPUT input1 = new INPUT {
+                type = INPUT_KEYBOARD,
+                ki = new KEYBDINPUT() {
+                    wVk = (short) key,
+                    wScan = 0,
+                    dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN,
+                    time = 0,
+                    dwExtraInfo = 0
+                },
+            };
+            SendInput(1, ref input0, Marshal.SizeOf(input0));
+            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            Thread.Sleep(100); // wait
+            input1.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            input0.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input0, Marshal.SizeOf(input0));
+        }
+
+        public static void SendKeyWithCtrl(int key, bool isExtend = false) {
+            INPUT input0 = new INPUT {
+                type = INPUT_KEYBOARD,
+                ki = new KEYBDINPUT() {
+                    wVk = (short) 0x11, // VK_CONTROL
+                    wScan = 0,
+                    dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN,
+                    time = 0,
+                    dwExtraInfo = 0
+                },
+            };
+            INPUT input1 = new INPUT {
+                type = INPUT_KEYBOARD,
+                ki = new KEYBDINPUT() {
+                    wVk = (short) key,
+                    wScan = 0,
+                    dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN,
+                    time = 0,
+                    dwExtraInfo = 0
+                },
+            };
+            SendInput(1, ref input0, Marshal.SizeOf(input0));
+            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            Thread.Sleep(100); // wait
+            input1.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            input0.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input0, Marshal.SizeOf(input0));
+        }
+
+        public static void SendKeyWithAlt(int key, bool isExtend = false) {
+            INPUT input0 = new INPUT {
+                type = INPUT_KEYBOARD,
+                ki = new KEYBDINPUT() {
+                    wVk = (short) 0x12, // VK_MENU : Alt key
+                    wScan = 0,
+                    dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN,
+                    time = 0,
+                    dwExtraInfo = 0
+                },
+            };
+            INPUT input1 = new INPUT {
+                type = INPUT_KEYBOARD,
+                ki = new KEYBDINPUT() {
+                    wVk = (short) key,
+                    wScan = 0,
+                    dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN,
+                    time = 0,
+                    dwExtraInfo = 0
+                },
+            };
+            SendInput(1, ref input0, Marshal.SizeOf(input0));
+            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            Thread.Sleep(100); // wait
+            input1.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            input0.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input0, Marshal.SizeOf(input0));
+        }
+
+        public static void SendKeyWithCtrlAndShift(int key, bool isExtend = false) {
+            INPUT input0 = new INPUT {
+                type = INPUT_KEYBOARD,
+                ki = new KEYBDINPUT() {
+                    wVk = (short) 0x11, // VK_CONTROL
+                    wScan = 0,
+                    dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN,
+                    time = 0,
+                    dwExtraInfo = 0
+                },
+            };
+            INPUT input1 = new INPUT {
+                type = INPUT_KEYBOARD,
+                ki = new KEYBDINPUT() {
+                    wVk = (short) 0x10, // VK_SHIFT
+                    wScan = 0,
+                    dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN,
+                    time = 0,
+                    dwExtraInfo = 0
+                },
+            };
+            INPUT input2 = new INPUT {
+                type = INPUT_KEYBOARD,
+                ki = new KEYBDINPUT() {
+                    wVk = (short) key,
+                    wScan = 0,
+                    dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYDOWN,
+                    time = 0,
+                    dwExtraInfo = 0
+                },
+            };
+            SendInput(1, ref input0, Marshal.SizeOf(input0));
+            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            SendInput(1, ref input2, Marshal.SizeOf(input2));
+            Thread.Sleep(100); // wait
+            input2.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input2, Marshal.SizeOf(input2));
+            input1.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            input0.ki.dwFlags = ((isExtend) ? (KEYEVENTF_EXTENDEDKEY) : 0x0) | KEYEVENTF_KEYUP;
+            SendInput(1, ref input0, Marshal.SizeOf(input0));
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
