@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaseqPoseToBpyLib", "Meta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaseqPoseToBpy", "MetaseqPoseToBpy\MetaseqPoseToBpy.csproj", "{BA446163-509F-4B30-9F0D-201C2A293EC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VNumPad", "VNumPad\VNumPad.csproj", "{B081665A-3E93-448E-BBEB-460DB5827F31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumPad", "NumPad\NumPad.csproj", "{B081665A-3E93-448E-BBEB-460DB5827F31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

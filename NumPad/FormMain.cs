@@ -15,7 +15,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace VNumPad {
+namespace NumPad {
     /// <summary>
     /// @author h.adachi
     /// </summary>
