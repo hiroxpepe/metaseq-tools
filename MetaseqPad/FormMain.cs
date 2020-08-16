@@ -175,5 +175,33 @@ namespace MetaseqPad {
             });
             tabControl.SelectedIndex = 0;
         }
+
+        private async void button28_Click(object sender, EventArgs e) {
+            await Task.Run(() => Utils.SendKeyWithAlt(0x70)); // Alt + F1 key
+        }
+
+        private async void button29_Click(object sender, EventArgs e) {
+            await Task.Run(() => Utils.SendKeyWithAlt(0x71)); // Alt + F2 key
+        }
+
+        private async void button30_Click(object sender, EventArgs e) {
+            await Task.Run(() => Utils.SendKeyWithAlt(0x72)); // Alt + F3 key
+        }
+
+        private async void button31_Click(object sender, EventArgs e) {
+            await Task.Run(() => Utils.SendKeyWithAlt(0x73)); // Alt + F4 key
+        }
+
+        private async void button32_Click(object sender, EventArgs e) {
+            await Task.Run(() => Utils.SendKeyWithAlt(0x74)); // Alt + F5 key
+        }
+
+        private async void button33_Click(object sender, EventArgs e) {
+            await Task.Run(() => Utils.SendKeyWithAlt(0x75)); // Alt + F6 key
+        }
+
+        private async void button34_Click(object sender, EventArgs e) {
+            await Task.Run(() => Utils.SendKeyWithAlt(0x76)); // Alt + F7 key
+        }
     }
 }

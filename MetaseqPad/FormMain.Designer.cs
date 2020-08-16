@@ -53,9 +53,18 @@
             this.button25 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.button27 = new System.Windows.Forms.Button();
+            this.button28 = new System.Windows.Forms.Button();
+            this.button29 = new System.Windows.Forms.Button();
+            this.button30 = new System.Windows.Forms.Button();
+            this.button31 = new System.Windows.Forms.Button();
+            this.button32 = new System.Windows.Forms.Button();
+            this.button33 = new System.Windows.Forms.Button();
+            this.button34 = new System.Windows.Forms.Button();
+            this.groupBox = new System.Windows.Forms.GroupBox();
             this.tabControl.SuspendLayout();
             this.tabPageModeling.SuspendLayout();
             this.tabPageUV.SuspendLayout();
+            this.groupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -595,12 +604,156 @@
             this.button27.UseVisualStyleBackColor = false;
             this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
+            // button28
+            // 
+            this.button28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.button28.FlatAppearance.BorderSize = 0;
+            this.button28.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button28.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button28.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.button28.ForeColor = System.Drawing.SystemColors.Control;
+            this.button28.Location = new System.Drawing.Point(10, 20);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(22, 27);
+            this.button28.TabIndex = 5;
+            this.button28.TabStop = false;
+            this.button28.Text = "平";
+            this.button28.UseVisualStyleBackColor = false;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
+            // button29
+            // 
+            this.button29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.button29.FlatAppearance.BorderSize = 0;
+            this.button29.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button29.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button29.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.button29.ForeColor = System.Drawing.SystemColors.Control;
+            this.button29.Location = new System.Drawing.Point(38, 20);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(22, 27);
+            this.button29.TabIndex = 6;
+            this.button29.TabStop = false;
+            this.button29.Text = "透";
+            this.button29.UseVisualStyleBackColor = false;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
+            // 
+            // button30
+            // 
+            this.button30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.button30.FlatAppearance.BorderSize = 0;
+            this.button30.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button30.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button30.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.button30.ForeColor = System.Drawing.SystemColors.Control;
+            this.button30.Location = new System.Drawing.Point(69, 20);
+            this.button30.Name = "button30";
+            this.button30.Size = new System.Drawing.Size(22, 27);
+            this.button30.TabIndex = 7;
+            this.button30.TabStop = false;
+            this.button30.Text = "点";
+            this.button30.UseVisualStyleBackColor = false;
+            this.button30.Click += new System.EventHandler(this.button30_Click);
+            // 
+            // button31
+            // 
+            this.button31.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.button31.FlatAppearance.BorderSize = 0;
+            this.button31.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button31.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button31.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.button31.ForeColor = System.Drawing.SystemColors.Control;
+            this.button31.Location = new System.Drawing.Point(96, 20);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(22, 27);
+            this.button31.TabIndex = 8;
+            this.button31.TabStop = false;
+            this.button31.Text = "辺";
+            this.button31.UseVisualStyleBackColor = false;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
+            // 
+            // button32
+            // 
+            this.button32.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.button32.FlatAppearance.BorderSize = 0;
+            this.button32.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button32.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button32.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.button32.ForeColor = System.Drawing.SystemColors.Control;
+            this.button32.Location = new System.Drawing.Point(123, 20);
+            this.button32.Name = "button32";
+            this.button32.Size = new System.Drawing.Size(22, 27);
+            this.button32.TabIndex = 9;
+            this.button32.TabStop = false;
+            this.button32.Text = "面";
+            this.button32.UseVisualStyleBackColor = false;
+            this.button32.Click += new System.EventHandler(this.button32_Click);
+            // 
+            // button33
+            // 
+            this.button33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.button33.FlatAppearance.BorderSize = 0;
+            this.button33.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button33.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button33.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button33.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.button33.ForeColor = System.Drawing.SystemColors.Control;
+            this.button33.Location = new System.Drawing.Point(150, 20);
+            this.button33.Name = "button33";
+            this.button33.Size = new System.Drawing.Size(22, 27);
+            this.button33.TabIndex = 10;
+            this.button33.TabStop = false;
+            this.button33.Text = "前";
+            this.button33.UseVisualStyleBackColor = false;
+            this.button33.Click += new System.EventHandler(this.button33_Click);
+            // 
+            // groupBox
+            // 
+            this.groupBox.Controls.Add(this.button34);
+            this.groupBox.Controls.Add(this.button31);
+            this.groupBox.Controls.Add(this.button33);
+            this.groupBox.Controls.Add(this.button28);
+            this.groupBox.Controls.Add(this.button32);
+            this.groupBox.Controls.Add(this.button29);
+            this.groupBox.Controls.Add(this.button30);
+            this.groupBox.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox.Location = new System.Drawing.Point(3, 219);
+            this.groupBox.Name = "groupBox";
+            this.groupBox.Size = new System.Drawing.Size(212, 54);
+            this.groupBox.TabIndex = 11;
+            this.groupBox.TabStop = false;
+            this.groupBox.Text = "表示";
+            // 
+            // button34
+            // 
+            this.button34.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.button34.FlatAppearance.BorderSize = 0;
+            this.button34.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button34.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button34.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button34.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.button34.ForeColor = System.Drawing.SystemColors.Control;
+            this.button34.Location = new System.Drawing.Point(180, 20);
+            this.button34.Name = "button34";
+            this.button34.Size = new System.Drawing.Size(22, 27);
+            this.button34.TabIndex = 12;
+            this.button34.TabStop = false;
+            this.button34.Text = "曲";
+            this.button34.UseVisualStyleBackColor = false;
+            this.button34.Click += new System.EventHandler(this.button34_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.ClientSize = new System.Drawing.Size(218, 223);
+            this.ClientSize = new System.Drawing.Size(218, 278);
+            this.Controls.Add(this.groupBox);
             this.Controls.Add(this.button27);
             this.Controls.Add(this.button26);
             this.Controls.Add(this.button25);
@@ -615,6 +768,7 @@
             this.tabControl.ResumeLayout(false);
             this.tabPageModeling.ResumeLayout(false);
             this.tabPageUV.ResumeLayout(false);
+            this.groupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -624,6 +778,7 @@
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPageModeling;
         private System.Windows.Forms.TabPage tabPageUV;
+        private System.Windows.Forms.GroupBox groupBox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
@@ -651,6 +806,13 @@
         private System.Windows.Forms.Button button25;
         private System.Windows.Forms.Button button26;
         private System.Windows.Forms.Button button27;
+        private System.Windows.Forms.Button button28;
+        private System.Windows.Forms.Button button29;
+        private System.Windows.Forms.Button button30;
+        private System.Windows.Forms.Button button31;
+        private System.Windows.Forms.Button button32;
+        private System.Windows.Forms.Button button33;
+        private System.Windows.Forms.Button button34;
     }
 }
 
