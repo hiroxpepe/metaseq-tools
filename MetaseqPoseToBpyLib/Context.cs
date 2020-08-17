@@ -47,7 +47,7 @@ namespace MetaseqPoseToBpyLib {
                 using (var _xmlReader = XmlReader.Create(_streamReader, _settings)) {
                     keyFrameList.Add(
                         new KeyFrame(
-                            new RateAndPosition(filePath),
+                            new RateAndLocation(filePath),
                             (PoseSet) _serializer.Deserialize(_xmlReader)
                         )
                     );
@@ -67,11 +67,11 @@ namespace MetaseqPoseToBpyLib {
                         _buff += $"ob.rotation_euler.x = {_euler.X}\n";
                         _buff += $"ob.rotation_euler.y = {_euler.Y}\n";
                         _buff += $"ob.rotation_euler.z = {_euler.Z}\n";
-                        _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndPosition.Position}, group = '{_pose.name}')\n\n";
+                        _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndLocation.Location}, group = '{_pose.name}')\n\n";
                     }
                 });
-                _fps = _keyFrame.RateAndPosition.Rate;
-                _frame_end = _keyFrame.RateAndPosition.Position;
+                _fps = _keyFrame.RateAndLocation.Rate;
+                _frame_end = _keyFrame.RateAndLocation.Location;
             });
             _buff += $"bpy.context.scene.render.fps = {_fps}\n";
             _buff += $"bpy.data.scenes['Scene'].frame_end = {_frame_end}\n";
@@ -154,34 +154,34 @@ namespace MetaseqPoseToBpyLib {
             ///////////////////////////////////////////////////////////////////////////////////////////
             // Constructor
 
-            public KeyFrame(RateAndPosition rateAndPosition, PoseSet poseSet) {
-                RateAndPosition = rateAndPosition;
+            public KeyFrame(RateAndLocation rateAndLocation, PoseSet poseSet) {
+                RateAndLocation = rateAndLocation;
                 PoseSet = poseSet;
             }
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             // Properties [noun, adjectives]
 
-            public RateAndPosition RateAndPosition { get; }
+            public RateAndLocation RateAndLocation { get; }
             public PoseSet PoseSet { get; }
         }
 
-        class RateAndPosition {
+        class RateAndLocation {
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             // Constructor
 
-            public RateAndPosition(string filePath) {
+            public RateAndLocation(string filePath) {
                 string _fileName = filePath.Split('\\').Last();
                 Rate = int.Parse(_fileName.Split('_')[1]);
-                Position = int.Parse(_fileName.Split('_')[2].Replace(".xml", ""));
+                Location = int.Parse(_fileName.Split('_')[2].Replace(".xml", ""));
             }
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             // Properties [noun, adjectives]
 
             public int Rate { get; }
-            public int Position { get; }
+            public int Location { get; }
         }
 
     }
