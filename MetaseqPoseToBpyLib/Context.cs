@@ -83,32 +83,31 @@ namespace MetaseqPoseToBpyLib {
 
         RotationEuler getRotationEuler(PoseSetPose pose) {
             RotationEuler _euler = new RotationEuler();
-            string _name = pose.name;
-            if (getPattern(_name) == 1) {
+            if (getPattern(pose.name) == 1) {
                 _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Y = toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZXY";
                 return _euler;
-            } else if (getPattern(_name) == 2) {
+            } else if (getPattern(pose.name) == 2) {
                 _euler.X = -toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZXY";
                 return _euler;
-            } else if (getPattern(_name) == 3) {
+            } else if (getPattern(pose.name) == 3) {
                 _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Z = -toRadian(Decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZXY";
                 return _euler;
-            } else if (getPattern(_name) == 4) {
+            } else if (getPattern(pose.name) == 4) {
                 _euler.X = -toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Y = toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZYX";
                 return _euler;
-            } else if (getPattern(_name) == 5) {
+            } else if (getPattern(pose.name) == 5) {
                 _euler.X = toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Y = -toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
