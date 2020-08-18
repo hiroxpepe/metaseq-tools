@@ -84,44 +84,31 @@ namespace MetaseqPoseToBpyLib {
         RotationEuler getRotationEuler(PoseSetPose pose) {
             RotationEuler _euler = new RotationEuler();
             string _name = pose.name;
-            if (_name.Equals("Hips") || _name.Equals("Spine") ||
-                _name.Equals("UpperChest") || _name.Equals("Neck") ||
-                _name.Equals("Head") || _name.Equals("Head_end")) {
+            if (getPattern(_name) == 1) {
                 _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Y = toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZXY";
                 return _euler;
-            } else if (_name.Equals("LeftUpperLeg") || _name.Equals("RightUpperLeg")) {
+            } else if (getPattern(_name) == 2) {
                 _euler.X = -toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZXY";
                 return _euler;
-            } else if (_name.Equals("LeftLowerLeg") || _name.Equals("LeftFoot") ||
-                _name.Equals("LeftToeBase") || _name.Equals("LeftToeEnd") ||
-                _name.Equals("RightLowerLeg") || _name.Equals("RightFoot") ||
-                _name.Equals("RightToeBase") || _name.Equals("RightToeEnd")) {
+            } else if (getPattern(_name) == 3) {
                 _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Z = -toRadian(Decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZXY";
                 return _euler;
-            } else if (_name.Equals("LeftShoulder") || _name.Equals("LeftUpperArm") ||
-                _name.Equals("LeftLowerArm") || _name.Equals("LeftHand") ||
-                _name.Equals("LeftThumbProximal") || _name.Equals("LeftIndexProximal") ||
-                _name.Equals("LeftMiddleProximal") || _name.Equals("LeftRingProximal") || 
-                _name.Equals("LeftLittleProximal")) {
+            } else if (getPattern(_name) == 4) {
                 _euler.X = -toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Y = toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZYX";
                 return _euler;
-            } else if (_name.Equals("RightShoulder") || _name.Equals("RightUpperArm") ||
-                _name.Equals("RightLowerArm") || _name.Equals("RightHand") ||
-                _name.Equals("RightThumbProximal") || _name.Equals("RightIndexProximal") ||
-                _name.Equals("RightMiddleProximal") || _name.Equals("RightRingProximal") || 
-                _name.Equals("RightLittleProximal")) {
+            } else if (getPattern(_name) == 5) {
                 _euler.X = toRadian(Decimal.ToDouble(pose.rotH));
                 _euler.Y = -toRadian(Decimal.ToDouble(pose.rotP));
                 _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
@@ -129,6 +116,38 @@ namespace MetaseqPoseToBpyLib {
                 return _euler;
             }
             return null;
+        }
+
+        int getPattern(string name) {
+            if (name.Equals("Hips") || name.Equals("Spine") ||
+                name.Equals("UpperChest") || name.Equals("Neck") ||
+                name.Equals("Head") || name.Equals("Head_end")) {
+                return 1;
+            }
+            else if (name.Equals("LeftUpperLeg") || name.Equals("RightUpperLeg")) {
+                return 2;
+            }
+            else if (name.Equals("LeftLowerLeg") || name.Equals("LeftFoot") ||
+                name.Equals("LeftToeBase") || name.Equals("LeftToeEnd") ||
+                name.Equals("RightLowerLeg") || name.Equals("RightFoot") ||
+                name.Equals("RightToeBase") || name.Equals("RightToeEnd")) {
+                return 3;
+            }
+            else if (name.Equals("LeftShoulder") || name.Equals("LeftUpperArm") ||
+                name.Equals("LeftLowerArm") || name.Equals("LeftHand") ||
+                name.Equals("LeftThumbProximal") || name.Equals("LeftIndexProximal") ||
+                name.Equals("LeftMiddleProximal") || name.Equals("LeftRingProximal") ||
+                name.Equals("LeftLittleProximal")) {
+                return 4;
+            }
+            else if (name.Equals("RightShoulder") || name.Equals("RightUpperArm") ||
+                name.Equals("RightLowerArm") || name.Equals("RightHand") ||
+                name.Equals("RightThumbProximal") || name.Equals("RightIndexProximal") ||
+                name.Equals("RightMiddleProximal") || name.Equals("RightRingProximal") ||
+                name.Equals("RightLittleProximal")) {
+                return 5;
+            }
+            return 0;
         }
 
         double toRadian(double angle) {
