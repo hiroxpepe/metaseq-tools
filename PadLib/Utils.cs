@@ -25,6 +25,8 @@ namespace PadLib {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Constants
 
+        private const string TARGET_TITLE = "Metasequoia 4";
+
         #region Win32API Constants
 
         private const int INPUT_KEYBOARD = 1;
@@ -38,7 +40,7 @@ namespace PadLib {
         // public static Methods [verb]
 
         public static void SendKey(int key, bool isExtend = false) {
-            SetActive();
+            if (!SetActive()) return;
             INPUT input = getKeyDownInput(key, isExtend);
             SendInput(1, ref input, Marshal.SizeOf(input));
             Thread.Sleep(100); // wait
@@ -47,7 +49,7 @@ namespace PadLib {
         }
 
         public static void SendKeyWithShift(int key, bool isExtend = false) {
-            SetActive();
+            if (!SetActive()) return;
             INPUT input0 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
             INPUT input1 = getKeyDownInput(key, isExtend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
@@ -60,7 +62,7 @@ namespace PadLib {
         }
 
         public static void SendKeyWithCtrl(int key, bool isExtend = false) {
-            SetActive();
+            if (!SetActive()) return;
             INPUT input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
             INPUT input1 = getKeyDownInput(key, isExtend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
@@ -73,7 +75,7 @@ namespace PadLib {
         }
 
         public static void SendKeyWithAlt(int key, bool isExtend = false) {
-            SetActive();
+            if (!SetActive()) return;
             INPUT input0 = getKeyDownInput(0x12, isExtend); // VK_MENU : Alt key
             INPUT input1 = getKeyDownInput(key, isExtend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
@@ -86,7 +88,7 @@ namespace PadLib {
         }
 
         public static void SendKeyWithCtrlAndShift(int key, bool isExtend = false) {
-            SetActive();
+            if (!SetActive()) return;
             INPUT input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
             INPUT input1 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
             INPUT input2 = getKeyDownInput(key, isExtend);
@@ -102,13 +104,14 @@ namespace PadLib {
             SendInput(1, ref input0, Marshal.SizeOf(input0));
         }
 
-        public static void SetActive() {
+        public static bool SetActive() {
             foreach (Process _p in Process.GetProcesses()) {
-                if (0 <= _p.MainWindowTitle.IndexOf("Metasequoia 4")) {
+                if (0 <= _p.MainWindowTitle.IndexOf(TARGET_TITLE)) {
                     SetForegroundWindow(_p.MainWindowHandle);
-                    break;
+                    return true;
                 }
             }
+            return false;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
