@@ -44,11 +44,11 @@ namespace MetaseqPad {
 
         protected override CreateParams CreateParams {
             get {
-                CreateParams p = base.CreateParams;
+                CreateParams _p = base.CreateParams;
                 if (!base.DesignMode) {
-                    p.ExStyle = p.ExStyle | (WS_EX_NOACTIVATE);
+                    _p.ExStyle = _p.ExStyle | (WS_EX_NOACTIVATE);
                 }
-                return p;
+                return _p;
             }
         }
 

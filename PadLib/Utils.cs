@@ -41,67 +41,67 @@ namespace PadLib {
 
         public static void SendKey(int key, bool isExtend = false) {
             if (!SetActive()) return;
-            INPUT input = getKeyDownInput(key, isExtend);
-            SendInput(1, ref input, Marshal.SizeOf(input));
+            INPUT _input = getKeyDownInput(key, isExtend);
+            SendInput(1, ref _input, Marshal.SizeOf(_input));
             Thread.Sleep(100); // wait
-            input = getKeyUpInput(input, isExtend);
-            SendInput(1, ref input, Marshal.SizeOf(input));
+            _input = getKeyUpInput(_input, isExtend);
+            SendInput(1, ref _input, Marshal.SizeOf(_input));
         }
 
         public static void SendKeyWithShift(int key, bool isExtend = false) {
             if (!SetActive()) return;
-            INPUT input0 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
-            INPUT input1 = getKeyDownInput(key, isExtend);
-            SendInput(1, ref input0, Marshal.SizeOf(input0));
-            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            INPUT _input0 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
+            INPUT _input1 = getKeyDownInput(key, isExtend);
+            SendInput(1, ref _input0, Marshal.SizeOf(_input0));
+            SendInput(1, ref _input1, Marshal.SizeOf(_input1));
             Thread.Sleep(100); // wait
-            input1 = getKeyUpInput(input1, isExtend);
-            SendInput(1, ref input1, Marshal.SizeOf(input1));
-            input0 = getKeyUpInput(input0, isExtend);
-            SendInput(1, ref input0, Marshal.SizeOf(input0));
+            _input1 = getKeyUpInput(_input1, isExtend);
+            SendInput(1, ref _input1, Marshal.SizeOf(_input1));
+            _input0 = getKeyUpInput(_input0, isExtend);
+            SendInput(1, ref _input0, Marshal.SizeOf(_input0));
         }
 
         public static void SendKeyWithCtrl(int key, bool isExtend = false) {
             if (!SetActive()) return;
-            INPUT input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
-            INPUT input1 = getKeyDownInput(key, isExtend);
-            SendInput(1, ref input0, Marshal.SizeOf(input0));
-            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            INPUT _input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
+            INPUT _input1 = getKeyDownInput(key, isExtend);
+            SendInput(1, ref _input0, Marshal.SizeOf(_input0));
+            SendInput(1, ref _input1, Marshal.SizeOf(_input1));
             Thread.Sleep(100); // wait
-            input1 = getKeyUpInput(input1, isExtend);
-            SendInput(1, ref input1, Marshal.SizeOf(input1));
-            input0 = getKeyUpInput(input0, isExtend);
-            SendInput(1, ref input0, Marshal.SizeOf(input0));
+            _input1 = getKeyUpInput(_input1, isExtend);
+            SendInput(1, ref _input1, Marshal.SizeOf(_input1));
+            _input0 = getKeyUpInput(_input0, isExtend);
+            SendInput(1, ref _input0, Marshal.SizeOf(_input0));
         }
 
         public static void SendKeyWithAlt(int key, bool isExtend = false) {
             if (!SetActive()) return;
-            INPUT input0 = getKeyDownInput(0x12, isExtend); // VK_MENU : Alt key
-            INPUT input1 = getKeyDownInput(key, isExtend);
-            SendInput(1, ref input0, Marshal.SizeOf(input0));
-            SendInput(1, ref input1, Marshal.SizeOf(input1));
+            INPUT _input0 = getKeyDownInput(0x12, isExtend); // VK_MENU : Alt key
+            INPUT _input1 = getKeyDownInput(key, isExtend);
+            SendInput(1, ref _input0, Marshal.SizeOf(_input0));
+            SendInput(1, ref _input1, Marshal.SizeOf(_input1));
             Thread.Sleep(100); // wait
-            input1 = getKeyUpInput(input1, isExtend);
-            SendInput(1, ref input1, Marshal.SizeOf(input1));
-            input0 = getKeyUpInput(input0, isExtend);
-            SendInput(1, ref input0, Marshal.SizeOf(input0));
+            _input1 = getKeyUpInput(_input1, isExtend);
+            SendInput(1, ref _input1, Marshal.SizeOf(_input1));
+            _input0 = getKeyUpInput(_input0, isExtend);
+            SendInput(1, ref _input0, Marshal.SizeOf(_input0));
         }
 
         public static void SendKeyWithCtrlAndShift(int key, bool isExtend = false) {
             if (!SetActive()) return;
-            INPUT input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
-            INPUT input1 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
-            INPUT input2 = getKeyDownInput(key, isExtend);
-            SendInput(1, ref input0, Marshal.SizeOf(input0));
-            SendInput(1, ref input1, Marshal.SizeOf(input1));
-            SendInput(1, ref input2, Marshal.SizeOf(input2));
+            INPUT _input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
+            INPUT _input1 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
+            INPUT _input2 = getKeyDownInput(key, isExtend);
+            SendInput(1, ref _input0, Marshal.SizeOf(_input0));
+            SendInput(1, ref _input1, Marshal.SizeOf(_input1));
+            SendInput(1, ref _input2, Marshal.SizeOf(_input2));
             Thread.Sleep(100); // wait
-            input2 = getKeyUpInput(input2, isExtend);
-            SendInput(1, ref input2, Marshal.SizeOf(input2));
-            input1 = getKeyUpInput(input1, isExtend);
-            SendInput(1, ref input1, Marshal.SizeOf(input1));
-            input0 = getKeyUpInput(input0, isExtend);
-            SendInput(1, ref input0, Marshal.SizeOf(input0));
+            _input2 = getKeyUpInput(_input2, isExtend);
+            SendInput(1, ref _input2, Marshal.SizeOf(_input2));
+            _input1 = getKeyUpInput(_input1, isExtend);
+            SendInput(1, ref _input1, Marshal.SizeOf(_input1));
+            _input0 = getKeyUpInput(_input0, isExtend);
+            SendInput(1, ref _input0, Marshal.SizeOf(_input0));
         }
 
         public static bool SetActive() {

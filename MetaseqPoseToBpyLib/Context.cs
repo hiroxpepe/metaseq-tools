@@ -84,33 +84,33 @@ namespace MetaseqPoseToBpyLib {
         RotationEuler getRotationEuler(PoseSetPose pose) {
             RotationEuler _euler = new RotationEuler();
             if (getPattern(pose.name) == 1) {
-                _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
-                _euler.Y = toRadian(Decimal.ToDouble(pose.rotH));
-                _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.X = toRadian(decimal.ToDouble(pose.rotP));
+                _euler.Y = toRadian(decimal.ToDouble(pose.rotH));
+                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZXY";
                 return _euler;
             } else if (getPattern(pose.name) == 2) {
-                _euler.X = -toRadian(Decimal.ToDouble(pose.rotP));
-                _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
-                _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.X = -toRadian(decimal.ToDouble(pose.rotP));
+                _euler.Y = -toRadian(decimal.ToDouble(pose.rotH));
+                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZXY";
                 return _euler;
             } else if (getPattern(pose.name) == 3) {
-                _euler.X = toRadian(Decimal.ToDouble(pose.rotP));
-                _euler.Y = -toRadian(Decimal.ToDouble(pose.rotH));
-                _euler.Z = -toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.X = toRadian(decimal.ToDouble(pose.rotP));
+                _euler.Y = -toRadian(decimal.ToDouble(pose.rotH));
+                _euler.Z = -toRadian(decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZXY";
                 return _euler;
             } else if (getPattern(pose.name) == 4) {
-                _euler.X = -toRadian(Decimal.ToDouble(pose.rotH));
-                _euler.Y = toRadian(Decimal.ToDouble(pose.rotP));
-                _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.X = -toRadian(decimal.ToDouble(pose.rotH));
+                _euler.Y = toRadian(decimal.ToDouble(pose.rotP));
+                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZYX";
                 return _euler;
             } else if (getPattern(pose.name) == 5) {
-                _euler.X = toRadian(Decimal.ToDouble(pose.rotH));
-                _euler.Y = -toRadian(Decimal.ToDouble(pose.rotP));
-                _euler.Z = toRadian(Decimal.ToDouble(pose.rotB));
+                _euler.X = toRadian(decimal.ToDouble(pose.rotH));
+                _euler.Y = -toRadian(decimal.ToDouble(pose.rotP));
+                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZYX";
                 return _euler;
             }
