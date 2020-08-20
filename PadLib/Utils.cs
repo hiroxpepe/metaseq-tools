@@ -40,7 +40,7 @@ namespace PadLib {
         // public static Methods [verb]
 
         public static void SendKey(int key, bool isExtend = false) {
-            if (!SetActive()) return;
+            if (!setActive()) return;
             INPUT _input = getKeyDownInput(key, isExtend);
             SendInput(1, ref _input, Marshal.SizeOf(_input));
             Thread.Sleep(100); // wait
@@ -49,7 +49,7 @@ namespace PadLib {
         }
 
         public static void SendKeyWithShift(int key, bool isExtend = false) {
-            if (!SetActive()) return;
+            if (!setActive()) return;
             INPUT _input0 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
             INPUT _input1 = getKeyDownInput(key, isExtend);
             SendInput(1, ref _input0, Marshal.SizeOf(_input0));
@@ -62,7 +62,7 @@ namespace PadLib {
         }
 
         public static void SendKeyWithCtrl(int key, bool isExtend = false) {
-            if (!SetActive()) return;
+            if (!setActive()) return;
             INPUT _input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
             INPUT _input1 = getKeyDownInput(key, isExtend);
             SendInput(1, ref _input0, Marshal.SizeOf(_input0));
@@ -75,7 +75,7 @@ namespace PadLib {
         }
 
         public static void SendKeyWithAlt(int key, bool isExtend = false) {
-            if (!SetActive()) return;
+            if (!setActive()) return;
             INPUT _input0 = getKeyDownInput(0x12, isExtend); // VK_MENU : Alt key
             INPUT _input1 = getKeyDownInput(key, isExtend);
             SendInput(1, ref _input0, Marshal.SizeOf(_input0));
@@ -88,7 +88,7 @@ namespace PadLib {
         }
 
         public static void SendKeyWithCtrlAndShift(int key, bool isExtend = false) {
-            if (!SetActive()) return;
+            if (!setActive()) return;
             INPUT _input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
             INPUT _input1 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
             INPUT _input2 = getKeyDownInput(key, isExtend);
@@ -104,18 +104,18 @@ namespace PadLib {
             SendInput(1, ref _input0, Marshal.SizeOf(_input0));
         }
 
-        public static bool SetActive() {
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        // private Methods [verb]
+
+        static bool setActive() {
             foreach (Process _p in Process.GetProcesses()) {
-                if (0 <= _p.MainWindowTitle.IndexOf(TARGET_TITLE)) {
+                if (_p.MainWindowTitle.IndexOf(TARGET_TITLE) >= 0) {
                     SetForegroundWindow(_p.MainWindowHandle);
                     return true;
                 }
             }
             return false;
         }
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-        // private Methods [verb]
 
         static INPUT getKeyDownInput(int key, bool isExtend) {
             return new INPUT {
