@@ -126,7 +126,7 @@ namespace MetaseqPoseToBpyLib {
         int getPattern(string name) {
             if (name.Equals("Hips") || name.Equals("Spine") ||
                 name.Equals("UpperChest") || name.Equals("Neck") ||
-                name.Equals("Head") || name.Equals("Head_end")) {
+                name.Equals("Head") || name.Equals("Head_end") || name.Equals("Hair")) {
                 return 1;
             }
             else if (name.Equals("LeftUpperLeg") || name.Equals("RightUpperLeg")) {
