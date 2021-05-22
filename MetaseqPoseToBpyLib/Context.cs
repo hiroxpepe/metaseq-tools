@@ -113,6 +113,12 @@ namespace MetaseqPoseToBpyLib {
                 _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
                 _euler.Mode = "ZYX";
                 return _euler;
+            } else if (getPattern(pose.name) == 6) {
+                _euler.X = toRadian(decimal.ToDouble(pose.rotP));
+                _euler.Y = -toRadian(decimal.ToDouble(pose.rotH));
+                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
+                _euler.Mode = "ZXY";
+                return _euler;
             }
             return null;
         }
@@ -145,6 +151,8 @@ namespace MetaseqPoseToBpyLib {
                 name.Equals("RightMiddleProximal") || name.Equals("RightRingProximal") ||
                 name.Equals("RightLittleProximal")) {
                 return 5;
+            } else if (name.Equals("LeftBustBase") || name.Equals("RightBustBase")) {
+                return 6;
             }
             return 0;
         }
