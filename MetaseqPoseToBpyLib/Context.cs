@@ -69,6 +69,15 @@ namespace MetaseqPoseToBpyLib {
                         _buff += $"ob.rotation_euler.z = {_euler.Z}\n";
                         _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndLocation.Location}, group = '{_pose.name}')\n\n";
                     }
+                    //var _location = getLocation(_pose);
+                    //if (_location != null) {
+                    //    _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
+                    //    _buff += $"ob.location.x = {_location.X}\n";
+                    //    _buff += $"ob.location.y = {_location.Y}\n";
+                    //    _buff += $"ob.location.z = {_location.Z}\n";
+                    //    _buff += $"ob.keyframe_insert('location', frame = {_keyFrame.RateAndLocation.Location}, group = '{_pose.name}')\n\n";
+                    //}
+                    // ob.location.y -= 1
                 });
                 _fps = _keyFrame.RateAndLocation.Rate;
                 _frame_end = _keyFrame.RateAndLocation.Location;
@@ -157,6 +166,15 @@ namespace MetaseqPoseToBpyLib {
             return 0;
         }
 
+        // FIXME:
+        Location getLocation(PoseSetPose pose) {
+            Location _location = new Location();
+            _location.X = decimal.ToDouble(pose.mvX);
+            _location.Y = decimal.ToDouble(pose.mvY);
+            _location.Z = decimal.ToDouble(pose.mvZ);
+            return _location;
+        }
+
         double toRadian(double angle) {
             return (double) (angle * Math.PI / 180); // Blender のスクリプトはラジアンで設定
         }
@@ -173,6 +191,17 @@ namespace MetaseqPoseToBpyLib {
             public double Y { get; set; }
             public double Z { get; set; }
             public string Mode { get; set; }
+        }
+
+        // FIXME:
+        class Location {
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            // Properties [noun, adjectives]
+
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }
         }
 
         class KeyFrame {
