@@ -28,27 +28,27 @@ namespace MetaseqPoseToBpyLib {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
 
-        List<KeyFrame> keyFrameList;
+        List<KeyFrame> _keyFrameList;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Constructor
 
         public Context() {
-            keyFrameList = new List<KeyFrame>();
+            _keyFrameList = new List<KeyFrame>();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // public Methods [verb]
 
         public void Read(string filePath) {
-            var _serializer = new XmlSerializer(typeof(PoseSet));
-            var _settings = new XmlReaderSettings() { CheckCharacters = false, };
-            using (var _streamReader = new StreamReader(filePath, Encoding.UTF8)) {
-                using (var _xmlReader = XmlReader.Create(_streamReader, _settings)) {
-                    keyFrameList.Add(
+            var serializer = new XmlSerializer(typeof(PoseSet));
+            var settings = new XmlReaderSettings() { CheckCharacters = false, };
+            using (var streamReader = new StreamReader(filePath, Encoding.UTF8)) {
+                using (var xmlReader = XmlReader.Create(streamReader, settings)) {
+                    _keyFrameList.Add(
                         new KeyFrame(
                             new RateAndLocation(filePath),
-                            (PoseSet) _serializer.Deserialize(_xmlReader)
+                            (PoseSet) serializer.Deserialize(xmlReader)
                         )
                     );
                 }
@@ -56,18 +56,18 @@ namespace MetaseqPoseToBpyLib {
         }
 
         public void Write() {
-            string _buff = "import bpy\n\n";
-            int _fps = 0, _frame_end = 0;
-            keyFrameList.ForEach(_keyFrame => {
-                _keyFrame.PoseSet.Pose.ToList().ForEach(_pose => {
-                    var _euler = getRotationEuler(_pose);
-                    if (_euler != null) {
-                        _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
-                        _buff += $"ob.rotation_mode = '{_euler.Mode}'\n";
-                        _buff += $"ob.rotation_euler.x = {_euler.X}\n";
-                        _buff += $"ob.rotation_euler.y = {_euler.Y}\n";
-                        _buff += $"ob.rotation_euler.z = {_euler.Z}\n";
-                        _buff += $"ob.keyframe_insert('rotation_euler', frame = {_keyFrame.RateAndLocation.Location}, group = '{_pose.name}')\n\n";
+            string buff = "import bpy\n\n";
+            int fps = 0, frame_end = 0;
+            _keyFrameList.ForEach(keyFrame => {
+                keyFrame.PoseSet.Pose.ToList().ForEach(pose => {
+                    var euler = getRotationEuler(pose);
+                    if (euler != null) {
+                        buff += $"ob = bpy.context.active_object.pose.bones['{pose.name}']\n";
+                        buff += $"ob.rotation_mode = '{euler.Mode}'\n";
+                        buff += $"ob.rotation_euler.x = {euler.X}\n";
+                        buff += $"ob.rotation_euler.y = {euler.Y}\n";
+                        buff += $"ob.rotation_euler.z = {euler.Z}\n";
+                        buff += $"ob.keyframe_insert('rotation_euler', frame = {keyFrame.RateAndLocation.Location}, group = '{pose.name}')\n\n";
                     }
                     //var _location = getLocation(_pose);
                     //if (_location != null) {
@@ -79,55 +79,55 @@ namespace MetaseqPoseToBpyLib {
                     //}
                     // ob.location.y -= 1
                 });
-                _fps = _keyFrame.RateAndLocation.Rate;
-                _frame_end = _keyFrame.RateAndLocation.Location;
+                fps = keyFrame.RateAndLocation.Rate;
+                frame_end = keyFrame.RateAndLocation.Location;
             });
-            _buff += $"bpy.context.scene.render.fps = {_fps}\n";
-            _buff += $"bpy.data.scenes['Scene'].frame_end = {_frame_end}\n";
-            File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/metaseq_animation.py", _buff);
+            buff += $"bpy.context.scene.render.fps = {fps}\n";
+            buff += $"bpy.data.scenes['Scene'].frame_end = {frame_end}\n";
+            File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/metaseq_animation.py", buff);
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // private Methods [verb]
 
         RotationEuler getRotationEuler(PoseSetPose pose) {
-            RotationEuler _euler = new RotationEuler();
+            RotationEuler euler = new RotationEuler();
             if (getPattern(pose.name) == 1) {
-                _euler.X = toRadian(decimal.ToDouble(pose.rotP));
-                _euler.Y = toRadian(decimal.ToDouble(pose.rotH));
-                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
-                _euler.Mode = "ZXY";
-                return _euler;
+                euler.X = toRadian(decimal.ToDouble(pose.rotP));
+                euler.Y = toRadian(decimal.ToDouble(pose.rotH));
+                euler.Z = toRadian(decimal.ToDouble(pose.rotB));
+                euler.Mode = "ZXY";
+                return euler;
             } else if (getPattern(pose.name) == 2) {
-                _euler.X = -toRadian(decimal.ToDouble(pose.rotP));
-                _euler.Y = -toRadian(decimal.ToDouble(pose.rotH));
-                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
-                _euler.Mode = "ZXY";
-                return _euler;
+                euler.X = -toRadian(decimal.ToDouble(pose.rotP));
+                euler.Y = -toRadian(decimal.ToDouble(pose.rotH));
+                euler.Z = toRadian(decimal.ToDouble(pose.rotB));
+                euler.Mode = "ZXY";
+                return euler;
             } else if (getPattern(pose.name) == 3) {
-                _euler.X = toRadian(decimal.ToDouble(pose.rotP));
-                _euler.Y = -toRadian(decimal.ToDouble(pose.rotH));
-                _euler.Z = -toRadian(decimal.ToDouble(pose.rotB));
-                _euler.Mode = "ZXY";
-                return _euler;
+                euler.X = toRadian(decimal.ToDouble(pose.rotP));
+                euler.Y = -toRadian(decimal.ToDouble(pose.rotH));
+                euler.Z = -toRadian(decimal.ToDouble(pose.rotB));
+                euler.Mode = "ZXY";
+                return euler;
             } else if (getPattern(pose.name) == 4) {
-                _euler.X = -toRadian(decimal.ToDouble(pose.rotH));
-                _euler.Y = toRadian(decimal.ToDouble(pose.rotP));
-                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
-                _euler.Mode = "ZYX";
-                return _euler;
+                euler.X = -toRadian(decimal.ToDouble(pose.rotH));
+                euler.Y = toRadian(decimal.ToDouble(pose.rotP));
+                euler.Z = toRadian(decimal.ToDouble(pose.rotB));
+                euler.Mode = "ZYX";
+                return euler;
             } else if (getPattern(pose.name) == 5) {
-                _euler.X = toRadian(decimal.ToDouble(pose.rotH));
-                _euler.Y = -toRadian(decimal.ToDouble(pose.rotP));
-                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
-                _euler.Mode = "ZYX";
-                return _euler;
+                euler.X = toRadian(decimal.ToDouble(pose.rotH));
+                euler.Y = -toRadian(decimal.ToDouble(pose.rotP));
+                euler.Z = toRadian(decimal.ToDouble(pose.rotB));
+                euler.Mode = "ZYX";
+                return euler;
             } else if (getPattern(pose.name) == 6) {
-                _euler.X = toRadian(decimal.ToDouble(pose.rotP));
-                _euler.Y = -toRadian(decimal.ToDouble(pose.rotH));
-                _euler.Z = toRadian(decimal.ToDouble(pose.rotB));
-                _euler.Mode = "ZXY";
-                return _euler;
+                euler.X = toRadian(decimal.ToDouble(pose.rotP));
+                euler.Y = -toRadian(decimal.ToDouble(pose.rotH));
+                euler.Z = toRadian(decimal.ToDouble(pose.rotB));
+                euler.Mode = "ZXY";
+                return euler;
             }
             return null;
         }
@@ -168,11 +168,11 @@ namespace MetaseqPoseToBpyLib {
 
         // FIXME:
         Location getLocation(PoseSetPose pose) {
-            Location _location = new Location();
-            _location.X = decimal.ToDouble(pose.mvX);
-            _location.Y = decimal.ToDouble(pose.mvY);
-            _location.Z = decimal.ToDouble(pose.mvZ);
-            return _location;
+            Location location = new Location();
+            location.X = decimal.ToDouble(pose.mvX);
+            location.Y = decimal.ToDouble(pose.mvY);
+            location.Z = decimal.ToDouble(pose.mvZ);
+            return location;
         }
 
         double toRadian(double angle) {
@@ -227,9 +227,9 @@ namespace MetaseqPoseToBpyLib {
             // Constructor
 
             public RateAndLocation(string filePath) {
-                string _fileName = filePath.Split('\\').Last();
-                Rate = int.Parse(_fileName.Split('_')[1]);
-                Location = int.Parse(_fileName.Split('_')[2].Replace(".xml", ""));
+                string fileName = filePath.Split('\\').Last();
+                Rate = int.Parse(fileName.Split('_')[1]);
+                Location = int.Parse(fileName.Split('_')[2].Replace(".xml", ""));
             }
 
             ///////////////////////////////////////////////////////////////////////////////////////////
