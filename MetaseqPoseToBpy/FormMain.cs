@@ -18,20 +18,27 @@ using MetaseqPoseToBpyLib;
 
 namespace MetaseqPoseToBpy {
     /// <summary>
-    /// @author h.adachi
+    /// The main form class.
     /// </summary>
+    /// <author>Hiroyuki Adachi</author>
     public partial class FormMain : Form {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
 
-        Context context;
+        /// <summary>
+        /// The context object to processing the xml files.
+        /// </summary>
+        Context _context;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Constructor
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public FormMain() {
-            context = new Context();
+            _context = new();
 
             InitializeComponent();
         }
@@ -39,31 +46,46 @@ namespace MetaseqPoseToBpy {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Event handler
 
+        /// <summary>
+        /// An event handler where files are dragged and dropped.
+        /// </summary>
+        /// <param name="sender">The event publisher is provided.</param>
+        /// <param name="e">The event parameters are provided.</param>
         private async void buttonFileDrop_DragDrop(object sender, DragEventArgs e) {
-            if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy
+            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
                 && e.Data.GetDataPresent(DataFormats.FileDrop, true)) {
-                var _data = e.Data.GetData(DataFormats.FileDrop, true) as string[];
-                if (_data != null) {
-                    foreach (string _filePath in _data) {
-                        await Task.Run(() => context.Read(_filePath));
+                var data = e.Data.GetData(DataFormats.FileDrop, true) as string[];
+                if (data is not null) {
+                    foreach (string _filePath in data) {
+                        await Task.Run(() => _context.Read(_filePath));
                     }
-                    await Task.Run(() => context.Write());
+                    await Task.Run(() => _context.Write());
                 }
             }
         }
 
+        /// <summary>
+        /// An event handler where files are dragged and entered.
+        /// </summary>
+        /// <param name="sender">The event publisher is provided.</param>
+        /// <param name="e">The event parameters are provided.</param>
         private void buttonFileDrop_DragEnter(object sender, DragEventArgs e) {
-            if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy
-                 && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: バリデーター
+            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
+                 && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: to add a validator.
                 e.Effect = DragDropEffects.Copy;
             } else {
                 e.Effect = DragDropEffects.None;
             }
         }
 
+        /// <summary>
+        /// An event handler where files are dragged and overd.
+        /// </summary>
+        /// <param name="sender">The event publisher is provided.</param>
+        /// <param name="e">The event parameters are provided.</param>
         private void buttonFileDrop_DragOver(object sender, DragEventArgs e) {
-            if ((e.AllowedEffect & DragDropEffects.Copy) == DragDropEffects.Copy
-                && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: バリデーター
+            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
+                && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: to add a validator.
                 e.Effect = DragDropEffects.Copy;
             } else {
                 e.Effect = DragDropEffects.None;
