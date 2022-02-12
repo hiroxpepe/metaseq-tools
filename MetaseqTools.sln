@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaseqPoseToBpyLib", "MetaseqPoseToBpyLib\MetaseqPoseToBpyLib.csproj", "{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoseToBpyLib", "MetaseqPoseToBpyLib\PoseToBpyLib.csproj", "{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaseqPoseToBpy", "MetaseqPoseToBpy\MetaseqPoseToBpy.csproj", "{BA446163-509F-4B30-9F0D-201C2A293EC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoseToBpy", "MetaseqPoseToBpy\PoseToBpy.csproj", "{BA446163-509F-4B30-9F0D-201C2A293EC4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumPad", "NumPad\NumPad.csproj", "{B081665A-3E93-448E-BBEB-460DB5827F31}"
 EndProject
