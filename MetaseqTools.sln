@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PadLib", "PadLib\PadLib.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaseqPad", "MetaseqPad\MetaseqPad.csproj", "{FBF41C4C-F23C-470B-A832-CB447A71B249}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLib", "CommonLib\CommonLib.csproj", "{25E6A224-1E40-4D86-A88A-1C668AC57B5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{FBF41C4C-F23C-470B-A832-CB447A71B249}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBF41C4C-F23C-470B-A832-CB447A71B249}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBF41C4C-F23C-470B-A832-CB447A71B249}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25E6A224-1E40-4D86-A88A-1C668AC57B5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25E6A224-1E40-4D86-A88A-1C668AC57B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25E6A224-1E40-4D86-A88A-1C668AC57B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25E6A224-1E40-4D86-A88A-1C668AC57B5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
