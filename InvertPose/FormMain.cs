@@ -14,6 +14,8 @@
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using InvertPoseLib;
+
 namespace InvertPose {
     /// <summary>
     /// The main form class.
@@ -22,12 +24,22 @@ namespace InvertPose {
     public partial class FormMain : Form {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
+        // Fields
+
+        /// <summary>
+        /// The context object to processing the xml files.
+        /// </summary>
+        Context _context;
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
         // Constructor
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         public FormMain() {
+            _context = new();
+
             InitializeComponent();
         }
 
@@ -45,9 +57,9 @@ namespace InvertPose {
                 var data = e.Data.GetData(DataFormats.FileDrop, true) as string[];
                 if (data is not null) {
                     foreach (string _filePath in data) {
-                        await Task.Run(() => { });
+                        await Task.Run(() => _context.Read(_filePath));
                     }
-                    await Task.Run(() => { });
+                    await Task.Run(() => _context.Write());
                 }
             }
         }
