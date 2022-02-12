@@ -29,6 +29,8 @@ namespace InvertPoseLib {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
 
+        PoseSet _poseSet;
+
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Constructor
 
@@ -42,7 +44,7 @@ namespace InvertPoseLib {
         // public Methods [verb]
 
         /// <summary>
-        /// Read: TBA
+        /// Read the pose XML file of Metasequoia 4.
         /// </summary>
         /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
         public void Read(string filePath) {
@@ -50,15 +52,30 @@ namespace InvertPoseLib {
             var settings = new XmlReaderSettings() { CheckCharacters = false, };
             using var streamReader = new StreamReader(filePath, Encoding.UTF8);
             using var xmlReader = XmlReader.Create(streamReader, settings);
-            var poseSet = (PoseSet) serializer.Deserialize(xmlReader);
+            _poseSet = (PoseSet) serializer.Deserialize(xmlReader);
         }
 
         /// <summary>
-        /// Write: TBA
+        /// Write the inverted pose XML file of Metasequoia 4.
         /// </summary>
-        public void Write() {
-            string buff = "skeleton\n";
-            File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/skeleton.xml", buff);
+        /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
+        public void Write(string filePath) {
+            // create an inverted XML file path.
+            var directoryName = Path.GetDirectoryName(filePath);
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+            var extension = Path.GetExtension(filePath);
+            var path = $"{directoryName}\\{fileNameWithoutExtension}_invert{extension}";
+            // convert the object to an XML string.
+            var serializer = new XmlSerializer(typeof(PoseSet));
+            using var stringWriter = new StringWriter();
+            serializer.Serialize(stringWriter, _poseSet);
+            var xml = stringWriter.ToString();
+            // To imitate Metasequoia 4 output.
+            xml = xml.Replace("utf-16", "UTF-8");
+            xml = xml.Replace("  ", "    ");
+            xml = xml.Replace(" /", "/");
+            xml = $"{xml}\r\n";
+            File.WriteAllText(path, xml);
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////

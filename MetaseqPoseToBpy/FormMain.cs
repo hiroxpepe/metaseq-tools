@@ -56,8 +56,8 @@ namespace MetaseqPoseToBpy {
                 && e.Data.GetDataPresent(DataFormats.FileDrop, true)) {
                 var data = e.Data.GetData(DataFormats.FileDrop, true) as string[];
                 if (data is not null) {
-                    foreach (string _filePath in data) {
-                        await Task.Run(() => _context.Read(_filePath));
+                    foreach (string filePath in data) {
+                        await Task.Run(() => _context.Read(filePath));
                     }
                     await Task.Run(() => _context.Write());
                 }
