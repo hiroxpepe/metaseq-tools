@@ -26,6 +26,8 @@ namespace InvertPoseLib {
     /// <author>Hiroyuki Adachi</author>
     public class Context {
 
+#nullable enable
+
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
 
@@ -38,6 +40,7 @@ namespace InvertPoseLib {
         /// Default constructor.
         /// </summary>
         public Context() {
+            _poseSet = new();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +55,10 @@ namespace InvertPoseLib {
             var settings = new XmlReaderSettings() { CheckCharacters = false, };
             using var streamReader = new StreamReader(filePath, Encoding.UTF8);
             using var xmlReader = XmlReader.Create(streamReader, settings);
-            _poseSet = (PoseSet) serializer.Deserialize(xmlReader);
+            var poseSet = serializer.Deserialize(xmlReader) as PoseSet;
+            if (poseSet is not null) {
+                _poseSet = poseSet;
+            }
         }
 
         /// <summary>
