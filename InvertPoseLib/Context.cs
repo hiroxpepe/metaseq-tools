@@ -31,7 +31,15 @@ namespace InvertPoseLib {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
 
-        PoseSet _poseSet;
+        /// <summary>
+        /// The list object that contains the original pose XML.
+        /// </summary>
+        PoseSet _originalPoseSet;
+
+        /// <summary>
+        /// The list object that is outputted as the inverted pose XML.
+        /// </summary>
+        PoseSet _inversedPoseSet;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Constructor
@@ -40,7 +48,8 @@ namespace InvertPoseLib {
         /// Default constructor.
         /// </summary>
         public Context() {
-            _poseSet = new();
+            _originalPoseSet = new();
+            _inversedPoseSet = new();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +66,9 @@ namespace InvertPoseLib {
             using var xmlReader = XmlReader.Create(streamReader, settings);
             var poseSet = serializer.Deserialize(xmlReader) as PoseSet;
             if (poseSet is not null) {
-                _poseSet = poseSet;
+                _originalPoseSet = poseSet;
+                _inversedPoseSet = poseSet;
+                invert();
             }
         }
 
@@ -74,7 +85,7 @@ namespace InvertPoseLib {
             // convert the object to an XML string.
             var serializer = new XmlSerializer(typeof(PoseSet));
             using var stringWriter = new StringWriter();
-            serializer.Serialize(stringWriter, _poseSet);
+            serializer.Serialize(stringWriter, _inversedPoseSet);
             var xml = stringWriter.ToString();
             // To imitate Metasequoia 4 output.
             xml = xml.Replace("utf-16", "UTF-8");
@@ -86,6 +97,89 @@ namespace InvertPoseLib {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // private Methods [verb]
+
+        /// <summary>
+        /// Invert all poses.
+        /// </summary>
+        void invert() {
+            _originalPoseSet.Pose.ToList().ForEach(pose => {
+                if (pose.name is "Hips" or "Spine" or "Chest" or "UpperChest" or "Neck" or "Head" or "Head_end" or 
+                    "Hair" or "HatBase" or "HatMid" or "HatTop") {
+                    var newPose = getNewPose();
+                    newPose.name = pose.name;
+                    newPose.rotP = pose.rotP; // pitch: x-axis
+                    newPose.rotH = -(pose.rotH); // head : y-axis
+                    newPose.rotB = -(pose.rotB); // bank : z-axis
+                    applyInvertPose(newPose);
+                }
+                if (pose.name is "LeftBustBase" or "RightBustBase") {
+                    var symmetricPose = getSymmetricPose(pose.name);
+                    var newPose = getNewPose();
+                    newPose.name = pose.name;
+                    newPose.rotP = symmetricPose.rotP; // pitch: x-axis
+                    newPose.rotH = -(symmetricPose.rotH); // head : y-axis
+                    newPose.rotB = -(symmetricPose.rotB); // bank : z-axis
+                    applyInvertPose(newPose);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Apply an inverted PoseSetPose object to the output list. 
+        /// </summary>
+        /// <param name="invertedPose">An inverted PoseSetPose object is provided.</param>
+        void applyInvertPose(PoseSetPose invertedPose) {
+            var newPoseList = _inversedPoseSet.Pose.ToList().Where(pose => pose.name != invertedPose.name).ToList();
+            newPoseList.Add(invertedPose);
+            _inversedPoseSet.Pose = newPoseList.ToArray();
+        }
+
+        /// <summary>
+        /// Get the symmetric PoseSetPose object.
+        /// </summary>
+        /// <param name="name">A name of bone name is provided.</param>
+        /// <returns>Return a symmetric PoseSetPose object.</returns>
+        PoseSetPose getSymmetricPose(string name) {
+            var search = flatten(name);
+            if (search.Contains("left")) {
+                search = search.Replace("left", "right");
+            } 
+            else if (search.Contains("right")) {
+                search = search.Replace("right", "left");
+            }
+            var result = _originalPoseSet.Pose.ToList().Where(pose => flatten(pose.name).Equals(search)).First();
+            return result;
+        }
+
+        /// <summary>
+        /// Flatten the bone name.
+        /// </summary>
+        /// <param name="name">A bone name is provided.</param>
+        /// <returns>Return the flatted bone name.</returns>
+        string flatten(string name) {
+            name = name.ToLower();
+            name = name.Replace("_", "");
+            return name;
+        }
+
+        /// <summary>
+        /// Get a new PoseSetPose object.
+        /// </summary>
+        /// <returns>Return a new PoseSetPose object.</returns>
+        PoseSetPose getNewPose() {
+            var pose = new PoseSetPose();
+            pose.name = "";
+            pose.mvX = 0.0000000m;
+            pose.mvY = 0.0000000m;
+            pose.mvZ = 0.0000000m;
+            pose.rotB = 0.0000000m;
+            pose.rotH = 0.0000000m;
+            pose.rotP = 0.0000000m;
+            pose.scX = 1.0000000m;
+            pose.scY = 1.0000000m;
+            pose.scZ = 1.0000000m;
+            return pose;
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // inner Classes
