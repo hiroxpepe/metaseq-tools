@@ -62,13 +62,22 @@ namespace InvertPoseLib {
         public void Read(string filePath) {
             var serializer = new XmlSerializer(typeof(PoseSet));
             var settings = new XmlReaderSettings() { CheckCharacters = false, };
-            using var streamReader = new StreamReader(filePath, Encoding.UTF8);
-            using var xmlReader = XmlReader.Create(streamReader, settings);
-            var poseSet = serializer.Deserialize(xmlReader) as PoseSet;
-            if (poseSet is not null) {
-                _originalPoseSet = poseSet;
-                _inversedPoseSet = poseSet;
-                invert();
+            using var streamReader1 = new StreamReader(filePath, Encoding.UTF8);
+            using var streamReader2 = new StreamReader(filePath, Encoding.UTF8);
+            using var xmlReader1 = XmlReader.Create(streamReader1, settings);
+            using var xmlReader2 = XmlReader.Create(streamReader2, settings);
+            var poseSet1 = serializer.Deserialize(xmlReader1) as PoseSet;
+            var poseSet2 = serializer.Deserialize(xmlReader2) as PoseSet;
+            if (poseSet1 is not null) {
+                if (poseSet2 is not null) {
+                    _originalPoseSet = poseSet1;
+                    _inversedPoseSet = poseSet2;
+                    invert();
+                } else {
+                    // TODO: ERROR LOG
+                }
+            } else {
+                // TODO: ERROR LOG
             }
         }
 
@@ -107,18 +116,32 @@ namespace InvertPoseLib {
                     "Hair" or "HatBase" or "HatMid" or "HatTop") {
                     var newPose = getNewPose();
                     newPose.name = pose.name;
-                    newPose.rotP = pose.rotP; // pitch: x-axis
-                    newPose.rotH = -(pose.rotH); // head : y-axis
-                    newPose.rotB = -(pose.rotB); // bank : z-axis
+                    newPose.rotP = pose.rotP;
+                    newPose.rotH = -(pose.rotH);
+                    newPose.rotB = -(pose.rotB);
                     applyInvertPose(newPose);
                 }
-                if (pose.name is "LeftBustBase" or "RightBustBase") {
+                if (pose.name is "LeftBustBase" or "RightBustBase" or
+                    "RightUpperLeg" or "RightLowerLeg" or "LeftUpperLeg" or "LeftLowerLeg" or 
+                    "LeftFoot" or "RightFoot" or "LeftToeBase" or "LeftToeEnd" or "RightToeBase" or "RightToeEnd" or
+                    "LeftShoulder" or "LeftUpperArm" or "LeftLowerArm" or "LeftHand" or
+                    "RightShoulder" or "RightUpperArm" or "RightLowerArm" or "RightHand" or
+                    "LeftThumbProximal" or "LeftThumbIntermediate" or "LeftThumbDistal" or
+                    "LeftIndexProximal" or "LeftIndexIntermediate" or "LeftIndexDistal" or
+                    "LeftMiddleProximal" or "LeftMiddleIntermediate" or "LeftMiddleDistal" or
+                    "LeftRingProximal" or "LeftRingIntermediate" or "LeftRingDistal" or
+                    "LeftLittleProximal" or "LeftLittleIntermediate" or "LeftLittleDistal" or
+                    "RightThumbProximal" or "RightThumbIntermediate" or "RightThumbDistal" or
+                    "RightIndexProximal" or "RightIndexIntermediate" or "RightIndexDistal" or
+                    "RightMiddleProximal" or "RightMiddleIntermediate" or "RightMiddleDistal" or
+                    "RightRingProximal" or "RightRingIntermediate" or "RightRingDistal" or
+                    "RightLittleProximal" or "RightLittleIntermediate" or "RightLittleDistal") {
                     var symmetricPose = getSymmetricPose(pose.name);
                     var newPose = getNewPose();
                     newPose.name = pose.name;
-                    newPose.rotP = symmetricPose.rotP; // pitch: x-axis
-                    newPose.rotH = -(symmetricPose.rotH); // head : y-axis
-                    newPose.rotB = -(symmetricPose.rotB); // bank : z-axis
+                    newPose.rotP = symmetricPose.rotP;
+                    newPose.rotH = -(symmetricPose.rotH);
+                    newPose.rotB = -(symmetricPose.rotB);
                     applyInvertPose(newPose);
                 }
             });
