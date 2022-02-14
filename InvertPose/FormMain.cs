@@ -14,14 +14,16 @@
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using MetaseqPoseToBpyLib;
+using InvertPoseLib;
 
-namespace MetaseqPoseToBpy {
+namespace InvertPose {
     /// <summary>
     /// The main form class.
     /// </summary>
     /// <author>Hiroyuki Adachi</author>
     public partial class FormMain : Form {
+
+#nullable enable
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
@@ -51,15 +53,13 @@ namespace MetaseqPoseToBpy {
         /// </summary>
         /// <param name="sender">The event publisher is provided.</param>
         /// <param name="e">The event parameters are provided.</param>
-        private async void buttonFileDrop_DragDrop(object sender, DragEventArgs e) {
+        async void buttonFileDrop_DragDrop(object sender, DragEventArgs e) {
             if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
                 && e.Data.GetDataPresent(DataFormats.FileDrop, true)) {
                 var data = e.Data.GetData(DataFormats.FileDrop, true) as string[];
                 if (data is not null) {
-                    foreach (string filePath in data) {
-                        await Task.Run(() => _context.Read(filePath));
-                    }
-                    await Task.Run(() => _context.Write());
+                    await Task.Run(() => _context.Read(data[0]));
+                    await Task.Run(() => _context.Write(data[0]));
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace MetaseqPoseToBpy {
         /// </summary>
         /// <param name="sender">The event publisher is provided.</param>
         /// <param name="e">The event parameters are provided.</param>
-        private void buttonFileDrop_DragEnter(object sender, DragEventArgs e) {
+        void buttonFileDrop_DragEnter(object sender, DragEventArgs e) {
             if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
                  && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: to add a validator.
                 e.Effect = DragDropEffects.Copy;
@@ -83,7 +83,7 @@ namespace MetaseqPoseToBpy {
         /// </summary>
         /// <param name="sender">The event publisher is provided.</param>
         /// <param name="e">The event parameters are provided.</param>
-        private void buttonFileDrop_DragOver(object sender, DragEventArgs e) {
+        void buttonFileDrop_DragOver(object sender, DragEventArgs e) {
             if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
                 && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: to add a validator.
                 e.Effect = DragDropEffects.Copy;
