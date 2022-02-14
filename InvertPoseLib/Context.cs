@@ -113,7 +113,8 @@ namespace InvertPoseLib {
         void invert() {
             _originalPoseSet.Pose.ToList().ForEach(pose => {
                 if (pose.name is "Hips" or "Spine" or "Chest" or "UpperChest" or "Neck" or "Head" or "Head_end" or 
-                    "Hair" or "HatBase" or "HatMid" or "HatTop") {
+                    "Hair" or "HatBase" or "HatMid" or "HatTop" or "SkirtBase" or "SkirtEnd" or
+                    "TailBase" or "TailCenter" or "TailMid" or "TailTop") {
                     var newPose = getNewPose();
                     newPose.name = pose.name;
                     newPose.rotP = pose.rotP;
