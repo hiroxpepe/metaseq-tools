@@ -26,6 +26,8 @@ namespace MetaseqPoseToBpyLib {
     /// <author>Hiroyuki Adachi</author>
     public class Context {
 
+#nullable enable
+
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
 
@@ -79,15 +81,15 @@ namespace MetaseqPoseToBpyLib {
                         buff += $"ob.rotation_euler.z = {euler.Z}\n";
                         buff += $"ob.keyframe_insert('rotation_euler', frame = {keyFrame.RateAndLocation.Location}, group = '{pose.name}')\n\n";
                     }
-                    //var _location = getLocation(_pose);
-                    //if (_location != null) {
-                    //    _buff += $"ob = bpy.context.active_object.pose.bones['{_pose.name}']\n";
-                    //    _buff += $"ob.location.x = {_location.X}\n";
-                    //    _buff += $"ob.location.y = {_location.Y}\n";
-                    //    _buff += $"ob.location.z = {_location.Z}\n";
-                    //    _buff += $"ob.keyframe_insert('location', frame = {_keyFrame.RateAndLocation.Location}, group = '{_pose.name}')\n\n";
-                    //}
-                    // ob.location.y -= 1
+                    var position = getPosition(pose);
+                    if (position != null) {
+                        buff += $"ob = bpy.context.active_object.pose.bones['{pose.name}']\n";
+                        buff += $"ob.location.x = {position.X}\n";
+                        buff += $"ob.location.y = {position.Y}\n";
+                        buff += $"ob.location.z = {position.Z}\n";
+                        buff += $"ob.keyframe_insert('location', frame = {keyFrame.RateAndLocation.Location}, group = '{pose.name}')\n\n";
+                    }
+                    //ob.location.y -= 1
                 });
                 fps = keyFrame.RateAndLocation.Rate;
                 frame_end = keyFrame.RateAndLocation.Location;
@@ -176,14 +178,21 @@ namespace MetaseqPoseToBpyLib {
             return pattern;
         }
 
-        // FIXME:
-        //Location getLocation(PoseSetPose pose) {
-        //    var location = new Location();
-        //    location.X = decimal.ToDouble(pose.mvX);
-        //    location.Y = decimal.ToDouble(pose.mvY);
-        //    location.Z = decimal.ToDouble(pose.mvZ);
-        //    return location;
-        //}
+        /// <summary>
+        /// Get the Position object.
+        /// </summary>
+        /// <param name="pose">A PoseSetPose object is provided.</param>
+        /// <returns>Return a Position object.</returns>
+        Position getPosition(PoseSetPose pose) {
+            if (pose.name is "Hips") {
+                var position = new Position();
+                position.X = decimal.ToDouble(pose.mvX);
+                position.Y = decimal.ToDouble(pose.mvY);
+                position.Z = decimal.ToDouble(pose.mvZ);
+                return position;
+            }
+            return null;
+        }
 
         /// <summary>
         /// Get the radian value of the angle.
@@ -207,15 +216,19 @@ namespace MetaseqPoseToBpyLib {
         record RotationEuler(double X, double Y, double Z, string Mode);
 
         // FIXME:
-        //record Location {
 
-        //    ///////////////////////////////////////////////////////////////////////////////////////////
-        //    // Properties [noun, adjectives]
+        /// <summary>
+        /// A value object that holds the position.
+        /// </summary>
+        record Position {
 
-        //    public double X { get; set; }
-        //    public double Y { get; set; }
-        //    public double Z { get; set; }
-        //}
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            // Properties [noun, adjectives]
+
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }
+        }
 
         /// <summary>
         /// A value object that holds the data to make Blender script.
