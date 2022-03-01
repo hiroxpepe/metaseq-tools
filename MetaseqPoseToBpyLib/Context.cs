@@ -157,7 +157,7 @@ namespace MetaseqPoseToBpyLib {
         /// <returns>Return a pattern number.</returns>
         int getPattern(string name) {
             var pattern = name switch {
-                "Hips" or "Spine" or "UpperChest" or "Neck" or "Head" or "Head_end" or "Hair"
+                "Hips" or "Spine" or "Chest" or "UpperChest" or "Neck" or "Head" or "Head_end" or "Hair"
                     => 1,
                 "LeftUpperLeg" or "RightUpperLeg"
                     => 2,
