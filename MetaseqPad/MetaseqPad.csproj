@@ -9,6 +9,7 @@
     <RootNamespace>MetaseqPad</RootNamespace>
     <AssemblyName>MetaseqPad</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <LangVersion>9</LangVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
