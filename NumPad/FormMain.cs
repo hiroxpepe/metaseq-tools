@@ -28,7 +28,7 @@ namespace NumPad {
 
         //#region Win32API Constants
 
-        private const int WS_EX_NOACTIVATE = 0x8000000;
+        const int WS_EX_NOACTIVATE = 0x8000000;
 
         //#endregion
 
@@ -44,11 +44,11 @@ namespace NumPad {
 
         protected override CreateParams CreateParams {
             get {
-                CreateParams _p = base.CreateParams;
-                if (!base.DesignMode) {
-                    _p.ExStyle = _p.ExStyle | (WS_EX_NOACTIVATE);
+                CreateParams p = base.CreateParams;
+                if (!DesignMode) {
+                    p.ExStyle = p.ExStyle | (WS_EX_NOACTIVATE);
                 }
-                return _p;
+                return p;
             }
         }
 
@@ -57,51 +57,51 @@ namespace NumPad {
 
         // https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes?redirectedfrom=MSDN
 
-        private async void button0_Click(object sender, EventArgs e) {
+        async void button0_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x30));
         }
 
-        private async void button1_Click(object sender, EventArgs e) {
+        async void button1_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x31));
         }
 
-        private async void button2_Click(object sender, EventArgs e) {
+        async void button2_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x32));
         }
 
-        private async void button3_Click(object sender, EventArgs e) {
+        async void button3_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x33));
         }
 
-        private async void button4_Click(object sender, EventArgs e) {
+        async void button4_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x34));
         }
 
-        private async void button5_Click(object sender, EventArgs e) {
+        async void button5_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x35));
         }
 
-        private async void button6_Click(object sender, EventArgs e) {
+        async void button6_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x36));
         }
 
-        private async void button7_Click(object sender, EventArgs e) {
+        async void button7_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x37));
         }
 
-        private async void button8_Click(object sender, EventArgs e) {
+        async void button8_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x38));
         }
 
-        private async void button9_Click(object sender, EventArgs e) {
+        async void button9_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x39));
         }
 
-        private async void buttonDot_Click(object sender, EventArgs e) {
+        async void buttonDot_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0xBE));
         }
 
-        private async void buttonEnter_Click(object sender, EventArgs e) {
+        async void buttonEnter_Click(object sender, EventArgs e) {
             await Task.Run(() => Utils.SendKey(0x0D));
         }
     }

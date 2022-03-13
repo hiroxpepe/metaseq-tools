@@ -11,8 +11,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -191,7 +189,7 @@ namespace InvertPoseLib {
         /// </summary>
         /// <returns>Return a new PoseSetPose object.</returns>
         PoseSetPose getNewPose() {
-            var pose = new PoseSetPose();
+            PoseSetPose pose = new();
             pose.name = "";
             pose.mvX = 0.0000000m;
             pose.mvY = 0.0000000m;
