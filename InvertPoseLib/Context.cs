@@ -118,6 +118,9 @@ namespace InvertPoseLib {
                     newPose.rotP = pose.rotP;
                     newPose.rotH = -(pose.rotH);
                     newPose.rotB = -(pose.rotB);
+                    if (pose.name is "Hips") {
+                        newPose.mvX = -pose.mvX;
+                    }
                     applyInvertPose(newPose);
                 }
                 if (pose.name is "LeftBustBase" or "RightBustBase" or
