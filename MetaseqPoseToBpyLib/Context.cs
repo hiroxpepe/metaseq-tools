@@ -144,6 +144,12 @@ namespace MetaseqPoseToBpyLib {
                     toRadian(decimal.ToDouble(pose.rotB)),
                     "ZXY"
                 ),
+                7 => new(
+                    toRadian(decimal.ToDouble(pose.rotP)),
+                    -toRadian(decimal.ToDouble(pose.rotB)),
+                    toRadian(decimal.ToDouble(pose.rotH)),
+                    "ZXY"
+                ),
                 0 or _ => null
             };
             return euler;
@@ -171,6 +177,8 @@ namespace MetaseqPoseToBpyLib {
                     => 5,
                 "LeftBustBase" or "RightBustBase"
                     => 6,
+                "TailBase" or "TailCenter" or "TailMid" or "TailTop"
+                    => 7, 
                 _
                     => 0
             };
