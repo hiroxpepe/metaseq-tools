@@ -11,6 +11,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,6 @@ namespace InvertPoseLib {
     /// </summary>
     /// <author>Hiroyuki Adachi</author>
     public class Context {
-
 #nullable enable
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,14 +58,14 @@ namespace InvertPoseLib {
         /// </summary>
         /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
         public void Read(string filePath) {
-            var serializer = new XmlSerializer(typeof(PoseSet));
-            var settings = new XmlReaderSettings() { CheckCharacters = false, };
-            using var streamReader1 = new StreamReader(filePath, Encoding.UTF8);
-            using var streamReader2 = new StreamReader(filePath, Encoding.UTF8);
-            using var xmlReader1 = XmlReader.Create(streamReader1, settings);
-            using var xmlReader2 = XmlReader.Create(streamReader2, settings);
-            var poseSet1 = serializer.Deserialize(xmlReader1) as PoseSet;
-            var poseSet2 = serializer.Deserialize(xmlReader2) as PoseSet;
+            XmlSerializer serializer = new(typeof(PoseSet));
+            XmlReaderSettings settings = new() { CheckCharacters = false, };
+            using StreamReader streamReader1 = new(filePath, Encoding.UTF8);
+            using StreamReader streamReader2 = new(filePath, Encoding.UTF8);
+            using XmlReader xmlReader1 = XmlReader.Create(streamReader1, settings);
+            using XmlReader xmlReader2 = XmlReader.Create(streamReader2, settings);
+            PoseSet poseSet1 = serializer.Deserialize(xmlReader1) as PoseSet;
+            PoseSet poseSet2 = serializer.Deserialize(xmlReader2) as PoseSet;
             if (poseSet1 is not null) {
                 if (poseSet2 is not null) {
                     _originalPoseSet = poseSet1;
@@ -85,15 +85,15 @@ namespace InvertPoseLib {
         /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
         public void Write(string filePath) {
             // create an inverted XML file path.
-            var directoryName = Path.GetDirectoryName(filePath);
-            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
-            var extension = Path.GetExtension(filePath);
-            var path = $"{directoryName}\\{fileNameWithoutExtension}_invert{extension}";
+            string directoryName = Path.GetDirectoryName(filePath);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+            string extension = Path.GetExtension(filePath);
+            string path = $"{directoryName}\\{fileNameWithoutExtension}_invert{extension}";
             // convert the object to an XML string.
-            var serializer = new XmlSerializer(typeof(PoseSet));
-            using var stringWriter = new StringWriter();
+            XmlSerializer serializer = new(typeof(PoseSet));
+            using StringWriter stringWriter = new();
             serializer.Serialize(stringWriter, _inversedPoseSet);
-            var xml = stringWriter.ToString();
+            string xml = stringWriter.ToString();
             // To imitate Metasequoia 4 output.
             xml = xml.Replace("utf-16", "UTF-8");
             xml = xml.Replace("  ", "    ");
@@ -113,7 +113,7 @@ namespace InvertPoseLib {
                 if (pose.name is "Hips" or "Spine" or "Chest" or "UpperChest" or "Neck" or "Head" or "Head_end" or 
                     "Hair" or "HatBase" or "HatMid" or "HatTop" or "SkirtBase" or "SkirtEnd" or
                     "TailBase" or "TailCenter" or "TailMid" or "TailTop") {
-                    var newPose = getNewPose();
+                    PoseSetPose newPose = getNewPose();
                     newPose.name = pose.name;
                     newPose.rotP = pose.rotP;
                     newPose.rotH = -(pose.rotH);
@@ -135,8 +135,8 @@ namespace InvertPoseLib {
                     "RightMiddleProximal" or "RightMiddleIntermediate" or "RightMiddleDistal" or
                     "RightRingProximal" or "RightRingIntermediate" or "RightRingDistal" or
                     "RightLittleProximal" or "RightLittleIntermediate" or "RightLittleDistal") {
-                    var symmetricPose = getSymmetricPose(pose.name);
-                    var newPose = getNewPose();
+                    PoseSetPose symmetricPose = getSymmetricPose(pose.name);
+                    PoseSetPose newPose = getNewPose();
                     newPose.name = pose.name;
                     newPose.rotP = symmetricPose.rotP;
                     newPose.rotH = -(symmetricPose.rotH);
@@ -151,7 +151,7 @@ namespace InvertPoseLib {
         /// </summary>
         /// <param name="invertedPose">An inverted PoseSetPose object is provided.</param>
         void applyInvertPose(PoseSetPose invertedPose) {
-            var newPoseList = _inversedPoseSet.Pose.ToList().Where(pose => pose.name != invertedPose.name).ToList();
+            List<PoseSetPose> newPoseList = _inversedPoseSet.Pose.ToList().Where(pose => pose.name != invertedPose.name).ToList();
             newPoseList.Add(invertedPose);
             _inversedPoseSet.Pose = newPoseList.ToArray();
         }
@@ -162,14 +162,14 @@ namespace InvertPoseLib {
         /// <param name="name">A name of bone name is provided.</param>
         /// <returns>Return a symmetric PoseSetPose object.</returns>
         PoseSetPose getSymmetricPose(string name) {
-            var search = flatten(name);
+            string search = flatten(name);
             if (search.Contains("left")) {
                 search = search.Replace("left", "right");
             } 
             else if (search.Contains("right")) {
                 search = search.Replace("right", "left");
             }
-            var result = _originalPoseSet.Pose.ToList().Where(pose => flatten(pose.name).Equals(search)).First();
+            PoseSetPose result = _originalPoseSet.Pose.ToList().Where(pose => flatten(pose.name).Equals(search)).First();
             return result;
         }
 

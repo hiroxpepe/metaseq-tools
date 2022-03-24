@@ -25,7 +25,6 @@ namespace MetaseqPoseToBpyLib {
     /// </summary>
     /// <author>Hiroyuki Adachi</author>
     public class Context {
-
 #nullable enable
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,9 +53,9 @@ namespace MetaseqPoseToBpyLib {
         /// </summary>
         /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
         public void Read(string filePath) {
-            var serializer = new XmlSerializer(typeof(PoseSet));
-            var settings = new XmlReaderSettings() { CheckCharacters = false, };
-            using var streamReader = new StreamReader(filePath, Encoding.UTF8);
+            XmlSerializer serializer = new(typeof(PoseSet));
+            XmlReaderSettings settings = new() { CheckCharacters = false, };
+            using StreamReader streamReader = new(filePath, Encoding.UTF8);
             using var xmlReader = XmlReader.Create(streamReader, settings);
             _keyFrameList.Add(new KeyFrame(
                 new RateAndLocation(filePath),
@@ -82,7 +81,7 @@ namespace MetaseqPoseToBpyLib {
                         buff += $"ob.keyframe_insert('rotation_euler', frame = {keyFrame.RateAndLocation.Location}, group = '{pose.name}')\n\n";
                     }
                     var position = getPosition(pose);
-                    if (position != null) {
+                    if (position is not null) {
                         buff += $"ob = bpy.context.active_object.pose.bones['{pose.name}']\n";
                         buff += $"ob.location.x = {position.X}\n";
                         buff += $"ob.location.y = {position.Y}\n";
@@ -108,38 +107,38 @@ namespace MetaseqPoseToBpyLib {
         /// <param name="pose">A PoseSetPose object is provided.</param>
         /// <returns>Return a RotationEuler object.</returns>
         RotationEuler getRotationEuler(PoseSetPose pose) {
-            var euler = getPattern(pose.name) switch {
-                1 => new RotationEuler(
+            RotationEuler euler = getPattern(pose.name) switch {
+                1 => new(
                     toRadian(decimal.ToDouble(pose.rotP)),
                     toRadian(decimal.ToDouble(pose.rotH)),
                     toRadian(decimal.ToDouble(pose.rotB)),
                     "ZXY"
                 ),
-                2 => new RotationEuler(
+                2 => new(
                     -toRadian(decimal.ToDouble(pose.rotP)),
                     -toRadian(decimal.ToDouble(pose.rotH)),
                     toRadian(decimal.ToDouble(pose.rotB)),
                     "ZXY"
                 ),
-                3 => new RotationEuler(
+                3 => new(
                     toRadian(decimal.ToDouble(pose.rotP)),
                     -toRadian(decimal.ToDouble(pose.rotH)),
                     -toRadian(decimal.ToDouble(pose.rotB)),
                     "ZXY"
                 ),
-                4 => new RotationEuler(
+                4 => new(
                     -toRadian(decimal.ToDouble(pose.rotH)),
                     toRadian(decimal.ToDouble(pose.rotP)),
                     toRadian(decimal.ToDouble(pose.rotB)),
                     "ZYX"
                 ),
-                5 => new RotationEuler(
+                5 => new(
                     toRadian(decimal.ToDouble(pose.rotH)),
                     -toRadian(decimal.ToDouble(pose.rotP)),
                     toRadian(decimal.ToDouble(pose.rotB)),
                     "ZYX"
                 ),
-                6 => new RotationEuler(
+                6 => new(
                     toRadian(decimal.ToDouble(pose.rotP)),
                     -toRadian(decimal.ToDouble(pose.rotH)),
                     toRadian(decimal.ToDouble(pose.rotB)),
@@ -156,7 +155,7 @@ namespace MetaseqPoseToBpyLib {
         /// <param name="name">A name of the bone of Metasequoia 4 is provided.</param>
         /// <returns>Return a pattern number.</returns>
         int getPattern(string name) {
-            var pattern = name switch {
+            int pattern = name switch {
                 "Hips" or "Spine" or "Chest" or "UpperChest" or "Neck" or "Head" or "Head_end" or "Hair"
                     => 1,
                 "LeftUpperLeg" or "RightUpperLeg"
@@ -185,7 +184,7 @@ namespace MetaseqPoseToBpyLib {
         /// <returns>Return a Position object.</returns>
         Position getPosition(PoseSetPose pose) {
             if (pose.name is "Hips") {
-                var position = new Position();
+                Position position = new();
                 position.X = decimal.ToDouble(pose.mvX);
                 position.Y = decimal.ToDouble(pose.mvY);
                 position.Z = decimal.ToDouble(pose.mvZ);

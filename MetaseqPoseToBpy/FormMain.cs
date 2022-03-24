@@ -22,6 +22,7 @@ namespace MetaseqPoseToBpy {
     /// </summary>
     /// <author>Hiroyuki Adachi</author>
     public partial class FormMain : Form {
+#nullable enable
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Fields
