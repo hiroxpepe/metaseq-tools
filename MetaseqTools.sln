@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoseToBpyLib", "MetaseqPoseToBpyLib\PoseToBpyLib.csproj", "{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MqoPoseToBpyLib", "MqoPoseToBpyLib\MqoPoseToBpyLib.csproj", "{C723947D-4A99-4D31-A3CF-CF2E618CB1AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoseToBpy", "MetaseqPoseToBpy\PoseToBpy.csproj", "{BA446163-509F-4B30-9F0D-201C2A293EC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MqoPoseToBpy", "MqoPoseToBpy\MqoPoseToBpy.csproj", "{BA446163-509F-4B30-9F0D-201C2A293EC4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumPad", "NumPad\NumPad.csproj", "{B081665A-3E93-448E-BBEB-460DB5827F31}"
 EndProject
@@ -13,11 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PadLib", "PadLib\PadLib.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaseqPad", "MetaseqPad\MetaseqPad.csproj", "{FBF41C4C-F23C-470B-A832-CB447A71B249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLib", "CommonLib\CommonLib.csproj", "{25E6A224-1E40-4D86-A88A-1C668AC57B5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLib", "CommonLib\CommonLib.csproj", "{25E6A224-1E40-4D86-A88A-1C668AC57B5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertPose", "InvertPose\InvertPose.csproj", "{F05947F6-9ADC-46BF-B061-A5328E9E87EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvertPose", "InvertPose\InvertPose.csproj", "{F05947F6-9ADC-46BF-B061-A5328E9E87EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertPoseLib", "InvertPoseLib\InvertPoseLib.csproj", "{FCA6CC7D-A7A9-44BB-82BB-53EA58FF5FFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvertPoseLib", "InvertPoseLib\InvertPoseLib.csproj", "{FCA6CC7D-A7A9-44BB-82BB-53EA58FF5FFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

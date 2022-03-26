@@ -19,7 +19,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace MetaseqPoseToBpyLib {
+namespace MqoPoseToBpy.Lib {
     /// <summary>
     /// The context object for exchanging the pose XML files of Metasequoia 4 to Blender's Python script.
     /// </summary>
