@@ -169,11 +169,19 @@ namespace MetaseqPoseToBpyLib {
                 "LeftLowerLeg" or "LeftFoot" or "LeftToeBase" or "LeftToeEnd" or
                 "RightLowerLeg" or "RightFoot" or "RightToeBase" or "RightToeEnd"
                     => 3,
-                "LeftShoulder" or "LeftUpperArm" or "LeftLowerArm" or "LeftHand" or "LeftThumbProximal" or
-                "LeftIndexProximal" or "LeftMiddleProximal" or "LeftRingProximal" or "LeftLittleProximal"
+                "LeftShoulder" or "LeftUpperArm" or "LeftLowerArm" or "LeftHand" or 
+                "LeftThumbProximal" or "LeftThumbIntermediate" or "LeftThumbDistal" or
+                "LeftIndexProximal" or "LeftIndexIntermediate" or "LeftIndexDistal" or
+                "LeftMiddleProximal" or "LeftMiddleIntermediate" or "LeftMiddleDistal" or
+                "LeftRingProximal" or "LeftRingIntermediate" or "LeftRingDistal" or
+                "LeftLittleProximal" or "LeftLittleIntermediate" or "LeftLittleDistal"
                     => 4,
-                "RightShoulder" or "RightUpperArm" or "RightLowerArm" or "RightHand" or "RightThumbProximal" or
-                "RightIndexProximal" or "RightMiddleProximal" or "RightRingProximal" or "RightLittleProximal"
+                "RightShoulder" or "RightUpperArm" or "RightLowerArm" or "RightHand" or 
+                "RightThumbProximal" or "RightThumbIntermediate" or "RightThumbDistal" or
+                "RightIndexProximal" or "RightIndexIntermediate" or "RightIndexDistal" or
+                "RightMiddleProximal" or "RightMiddleIntermediate" or "RightMiddleDistal" or
+                "RightRingProximal" or "RightRingIntermediate" or "RightRingDistal" or
+                "RightLittleProximal" or "RightLittleIntermediate" or "RightLittleDistal"
                     => 5,
                 "LeftBustBase" or "RightBustBase"
                     => 6,
