@@ -18,7 +18,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace InvertPoseLib {
+namespace InvertPose.Lib {
     /// <summary>
     /// The context object for converting the pose XML files.
     /// </summary>

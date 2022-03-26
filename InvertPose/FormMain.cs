@@ -14,7 +14,7 @@
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using InvertPoseLib;
+using InvertPose.Lib;
 
 namespace InvertPose {
     /// <summary>

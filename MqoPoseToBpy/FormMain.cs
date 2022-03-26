@@ -14,9 +14,9 @@
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using MetaseqPoseToBpyLib;
+using MqoPoseToBpy.Lib;
 
-namespace MetaseqPoseToBpy {
+namespace MqoPoseToBpy {
     /// <summary>
     /// The main form class.
     /// </summary>
