@@ -64,6 +64,18 @@ namespace MqoPoseToBpy.Lib {
         }
 
         /// <summary>
+        /// Read the pose XML file of Metasequoia 4 to the field list.
+        /// </summary>
+        /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
+        public void ReadOne(string filePath) {
+            XmlSerializer serializer = new(typeof(PoseSet));
+            XmlReaderSettings settings = new() { CheckCharacters = false, };
+            using StreamReader streamReader = new(filePath, Encoding.UTF8);
+            using var xmlReader = XmlReader.Create(streamReader, settings);
+            _keyFrameList.Add(new KeyFrame(null, (PoseSet) serializer.Deserialize(xmlReader)));
+        }
+
+        /// <summary>
         /// Write the Python script as a file for Blender.
         /// </summary>
         public void Write() {
@@ -88,7 +100,6 @@ namespace MqoPoseToBpy.Lib {
                         buff += $"ob.location.z = {position.Z}\n";
                         buff += $"ob.keyframe_insert('location', frame = {keyFrame.RateAndLocation.Location}, group = '{pose.name}')\n\n";
                     }
-                    //ob.location.y -= 1
                 });
                 fps = keyFrame.RateAndLocation.Rate;
                 frame_end = keyFrame.RateAndLocation.Location;
@@ -96,6 +107,47 @@ namespace MqoPoseToBpy.Lib {
             buff += $"bpy.context.scene.render.fps = {fps}\n";
             buff += $"bpy.data.scenes['Scene'].frame_end = {frame_end}\n";
             File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/metaseq_animation.py", buff);
+        }
+
+        /// <summary>
+        /// Write the Python script as a file for Blender.
+        /// </summary>
+        /// <param name="target">A object name of Blender is provided.</param>
+        /// <param name="prefix">A prefix string to add for Blender bone is provided.</param>
+        /// <param name="frame">A frame value to set for Blender animation is provided.</param>
+        /// <param name="filePath">A file path string to write a file is provided.</param>
+        public void WriteOne(string target, string prefix, int frame, string filePath) {
+            // create a file path to output.
+            string directoryName = Path.GetDirectoryName(filePath);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+            string path = $"{directoryName}\\{fileNameWithoutExtension}_{frame}frame_pose.py";
+            // create a bpy script for Blender.
+            string buff = "import bpy\n\n";
+            buff += $"ob = bpy.data.objects['{target}']\n";
+            buff += "bpy.context.view_layer.objects.active = ob\n\n";
+            KeyFrame keyFrame = _keyFrameList.First();
+            keyFrame.PoseSet.Pose.ToList().ForEach(pose => {
+                var euler = getRotationEuler(pose);
+                if (euler is not null) {
+                    buff += $"ob = bpy.context.active_object.pose.bones['{prefix}_{pose.name}']\n";
+                    buff += $"ob.rotation_mode = '{euler.Mode}'\n";
+                    buff += $"ob.rotation_euler.x = {euler.X}\n";
+                    buff += $"ob.rotation_euler.y = {euler.Y}\n";
+                    buff += $"ob.rotation_euler.z = {euler.Z}\n";
+                    buff += $"ob.keyframe_insert('rotation_euler', frame = {frame}, group = '{prefix}_{pose.name}')\n\n";
+                }
+                var position = getPosition(pose);
+                if (position is not null) {
+                    buff += $"ob = bpy.context.active_object.pose.bones['{prefix}_{pose.name}']\n";
+                    buff += $"ob.location.x = {position.X}\n";
+                    buff += $"ob.location.y = {position.Y}\n";
+                    buff += $"ob.location.z = {position.Z}\n";
+                    buff += $"ob.keyframe_insert('location', frame = {frame}, group = '{prefix}_{pose.name}')\n\n";
+                }
+            });
+            // write a bpy script.
+            File.WriteAllText(path, buff);
+            _keyFrameList.Clear();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
