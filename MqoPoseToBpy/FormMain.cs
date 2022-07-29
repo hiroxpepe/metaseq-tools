@@ -67,13 +67,13 @@ namespace MqoPoseToBpy {
                     } else if (data.Length == 1 &&
                         !string.IsNullOrEmpty(_textBoxTarget.Text) &&
                         !string.IsNullOrEmpty(_textBoxPrefix.Text) &&
-                        !string.IsNullOrEmpty(_textBoxFrame.Text)) {
+                        !string.IsNullOrEmpty(_textBoxCutNo.Text)) {
                         string filePath = data[0];
                         await Task.Run(() => _context.ReadOne(filePath));
                         await Task.Run(() => _context.WriteOne(
                             _textBoxTarget.Text,
                             _textBoxPrefix.Text, 
-                            int.Parse(_textBoxFrame.Text), 
+                            int.Parse(_textBoxCutNo.Text), 
                             filePath)
                         );
                     } else {

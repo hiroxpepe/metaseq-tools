@@ -25,9 +25,9 @@
         private void InitializeComponent() {
             this._buttonFileDrop = new System.Windows.Forms.Button();
             this._labelPrefix = new System.Windows.Forms.Label();
-            this._labelFrame = new System.Windows.Forms.Label();
+            this._labelCutNo = new System.Windows.Forms.Label();
             this._textBoxPrefix = new System.Windows.Forms.TextBox();
-            this._textBoxFrame = new System.Windows.Forms.TextBox();
+            this._textBoxCutNo = new System.Windows.Forms.TextBox();
             this._textBoxTarget = new System.Windows.Forms.TextBox();
             this._labelTarget = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -58,15 +58,15 @@
             this._labelPrefix.TabIndex = 3;
             this._labelPrefix.Text = "Prefix:";
             // 
-            // _labelFrame
+            // _labelCutNo
             // 
-            this._labelFrame.AutoSize = true;
-            this._labelFrame.ForeColor = System.Drawing.SystemColors.Control;
-            this._labelFrame.Location = new System.Drawing.Point(13, 148);
-            this._labelFrame.Name = "_labelFrame";
-            this._labelFrame.Size = new System.Drawing.Size(52, 20);
-            this._labelFrame.TabIndex = 5;
-            this._labelFrame.Text = "Frame:";
+            this._labelCutNo.AutoSize = true;
+            this._labelCutNo.ForeColor = System.Drawing.SystemColors.Control;
+            this._labelCutNo.Location = new System.Drawing.Point(13, 148);
+            this._labelCutNo.Name = "_labelCutNo";
+            this._labelCutNo.Size = new System.Drawing.Size(58, 20);
+            this._labelCutNo.TabIndex = 5;
+            this._labelCutNo.Text = "Cut No:";
             // 
             // _textBoxPrefix
             // 
@@ -75,12 +75,12 @@
             this._textBoxPrefix.Size = new System.Drawing.Size(93, 27);
             this._textBoxPrefix.TabIndex = 4;
             // 
-            // _textBoxFrame
+            // _textBoxCutNo
             // 
-            this._textBoxFrame.Location = new System.Drawing.Point(68, 148);
-            this._textBoxFrame.Name = "_textBoxFrame";
-            this._textBoxFrame.Size = new System.Drawing.Size(93, 27);
-            this._textBoxFrame.TabIndex = 6;
+            this._textBoxCutNo.Location = new System.Drawing.Point(68, 148);
+            this._textBoxCutNo.Name = "_textBoxCutNo";
+            this._textBoxCutNo.Size = new System.Drawing.Size(93, 27);
+            this._textBoxCutNo.TabIndex = 6;
             // 
             // _textBoxTarget
             // 
@@ -107,9 +107,9 @@
             this.ClientSize = new System.Drawing.Size(173, 188);
             this.Controls.Add(this._textBoxTarget);
             this.Controls.Add(this._labelTarget);
-            this.Controls.Add(this._textBoxFrame);
+            this.Controls.Add(this._textBoxCutNo);
             this.Controls.Add(this._textBoxPrefix);
-            this.Controls.Add(this._labelFrame);
+            this.Controls.Add(this._labelCutNo);
             this.Controls.Add(this._labelPrefix);
             this.Controls.Add(this._buttonFileDrop);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -120,7 +120,6 @@
             this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -128,10 +127,10 @@
         private System.Windows.Forms.Button _buttonFileDrop;
         private System.Windows.Forms.Label _labelTarget;
         private System.Windows.Forms.Label _labelPrefix;
-        private System.Windows.Forms.Label _labelFrame;
+        private System.Windows.Forms.Label _labelCutNo;
         private System.Windows.Forms.TextBox _textBoxTarget;
         private System.Windows.Forms.TextBox _textBoxPrefix;
-        private System.Windows.Forms.TextBox _textBoxFrame;
+        private System.Windows.Forms.TextBox _textBoxCutNo;
     }
 }
 
