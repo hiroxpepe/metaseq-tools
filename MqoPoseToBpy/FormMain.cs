@@ -57,10 +57,28 @@ namespace MqoPoseToBpy {
                 && e.Data.GetDataPresent(DataFormats.FileDrop, true)) {
                 var data = e.Data.GetData(DataFormats.FileDrop, true) as string[];
                 if (data is not null) {
-                    foreach (string filePath in data) {
-                        await Task.Run(() => _context.Read(filePath));
+                    // old version
+                    if (data.Length > 1) {
+                        foreach (string filePath in data) {
+                            await Task.Run(() => _context.Read(filePath));
+                        }
+                        await Task.Run(() => _context.Write());
+                    // new version
+                    } else if (data.Length == 1 &&
+                        !string.IsNullOrEmpty(_textBoxTarget.Text) &&
+                        !string.IsNullOrEmpty(_textBoxPrefix.Text) &&
+                        !string.IsNullOrEmpty(_textBoxCutNo.Text)) {
+                        string filePath = data[0];
+                        await Task.Run(() => _context.ReadOne(filePath));
+                        await Task.Run(() => _context.WriteOne(
+                            _textBoxTarget.Text,
+                            _textBoxPrefix.Text, 
+                            int.Parse(_textBoxCutNo.Text), 
+                            filePath)
+                        );
+                    } else {
+                        MessageBox.Show("Requires parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     }
-                    await Task.Run(() => _context.Write());
                 }
             }
         }
