@@ -15,12 +15,13 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using PadLib;
+using static PadLib.Utils;
 
 namespace NumPad {
     /// <summary>
-    /// @author h.adachi
+    /// The main form class.
     /// </summary>
+    /// <author>h.adachi (STUDIO MeowToon)</author>
     public partial class FormMain : Form {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,51 +59,51 @@ namespace NumPad {
         // https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes?redirectedfrom=MSDN
 
         async void button0_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x30));
+            await Task.Run(action: () => SendKey(key: 0x30));
         }
 
         async void button1_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x31));
+            await Task.Run(action: () => SendKey(key: 0x31));
         }
 
         async void button2_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x32));
+            await Task.Run(action: () => SendKey(key: 0x32));
         }
 
         async void button3_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x33));
+            await Task.Run(action: () => SendKey(key: 0x33));
         }
 
         async void button4_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x34));
+            await Task.Run(action: () => SendKey(key: 0x34));
         }
 
         async void button5_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x35));
+            await Task.Run(action: () => SendKey(key: 0x35));
         }
 
         async void button6_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x36));
+            await Task.Run(action: () => SendKey(key: 0x36));
         }
 
         async void button7_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x37));
+            await Task.Run(action: () => SendKey(key: 0x37));
         }
 
         async void button8_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x38));
+            await Task.Run(action: () => SendKey(key: 0x38));
         }
 
         async void button9_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x39));
+            await Task.Run(action: () => SendKey(key: 0x39));
         }
 
         async void buttonDot_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0xBE));
+            await Task.Run(action: () => SendKey(key: 0xBE));
         }
 
         async void buttonEnter_Click(object sender, EventArgs e) {
-            await Task.Run(() => Utils.SendKey(0x0D));
+            await Task.Run(action: () => SendKey(key: 0x0D));
         }
     }
 }

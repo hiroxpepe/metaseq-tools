@@ -3,10 +3,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
@@ -23,7 +25,7 @@ namespace MqoPoseToBpy.Lib {
     /// <summary>
     /// The context object for exchanging the pose XML files of Metasequoia 4 to Blender's Python script.
     /// </summary>
-    /// <author>Hiroyuki Adachi</author>
+    /// <author>h.adachi (STUDIO MeowToon)</author>
     public class Context {
 #nullable enable
 
@@ -33,7 +35,7 @@ namespace MqoPoseToBpy.Lib {
         /// <summary>
         /// The list object of KeyFrame objects.
         /// </summary>
-        List<KeyFrame> _keyFrameList;
+        List<KeyFrame> _keyframe_list;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Constructor
@@ -42,7 +44,7 @@ namespace MqoPoseToBpy.Lib {
         /// Default constructor.
         /// </summary>
         public Context() {
-            _keyFrameList = new();
+            _keyframe_list = new();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,28 +53,28 @@ namespace MqoPoseToBpy.Lib {
         /// <summary>
         /// Read the pose XML file of Metasequoia 4 to the field list.
         /// </summary>
-        /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
-        public void Read(string filePath) {
+        /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
+        public void Read(string file_path) {
             XmlSerializer serializer = new(typeof(PoseSet));
             XmlReaderSettings settings = new() { CheckCharacters = false, };
-            using StreamReader streamReader = new(filePath, Encoding.UTF8);
-            using var xmlReader = XmlReader.Create(streamReader, settings);
-            _keyFrameList.Add(new KeyFrame(
-                new RateAndLocation(filePath),
-                (PoseSet) serializer.Deserialize(xmlReader)
+            using StreamReader stream_reader = new(file_path, Encoding.UTF8);
+            using var xml_reader = XmlReader.Create(stream_reader, settings);
+            _keyframe_list.Add(new KeyFrame(
+                new RateAndLocation(file_path),
+                (PoseSet) serializer.Deserialize(xml_reader)
             ));
         }
 
         /// <summary>
         /// Read the pose XML file of Metasequoia 4 to the field list.
         /// </summary>
-        /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
-        public void ReadOne(string filePath) {
+        /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
+        public void ReadOne(string file_path) {
             XmlSerializer serializer = new(typeof(PoseSet));
             XmlReaderSettings settings = new() { CheckCharacters = false, };
-            using StreamReader streamReader = new(filePath, Encoding.UTF8);
-            using var xmlReader = XmlReader.Create(streamReader, settings);
-            _keyFrameList.Add(new KeyFrame(null, (PoseSet) serializer.Deserialize(xmlReader)));
+            using StreamReader stream_reader = new(file_path, Encoding.UTF8);
+            using var xmlReader = XmlReader.Create(stream_reader, settings);
+            _keyframe_list.Add(new KeyFrame(null, (PoseSet) serializer.Deserialize(xmlReader)));
         }
 
         /// <summary>
@@ -81,7 +83,7 @@ namespace MqoPoseToBpy.Lib {
         public void Write() {
             string buff = "import bpy\n\n";
             int fps = 0, frame_end = 0;
-            _keyFrameList.ForEach(keyFrame => {
+            _keyframe_list.ForEach(keyFrame => {
                 keyFrame.PoseSet.Pose.ToList().ForEach(pose => {
                     var euler = getRotationEuler(pose);
                     if (euler is not null) {
@@ -107,7 +109,7 @@ namespace MqoPoseToBpy.Lib {
             buff += $"bpy.context.scene.render.fps = {fps}\n";
             buff += $"bpy.data.scenes['Scene'].frame_end = {frame_end}\n";
             File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/metaseq_animation.py", buff);
-            _keyFrameList.Clear();
+            _keyframe_list.Clear();
         }
 
         /// <summary>
@@ -115,21 +117,21 @@ namespace MqoPoseToBpy.Lib {
         /// </summary>
         /// <param name="target">A object name of Blender is provided.</param>
         /// <param name="prefix">A prefix string to add for Blender bone is provided.</param>
-        /// <param name="cutNo">A cut number to set for my Blender addon is provided.</param>
-        /// <param name="filePath">A file path string to write a file is provided.</param>
-        public void WriteOne(string target, string prefix, int cutNo, string filePath) {
+        /// <param name="cut_num">A cut number to set for my Blender addon is provided.</param>
+        /// <param name="file_path">A file path string to write a file is provided.</param>
+        public void WriteOne(string target, string prefix, int cut_num, string file_path) {
             // create a file path to output.
-            string directoryName = Path.GetDirectoryName(filePath);
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
-            string path = $"{directoryName}\\{prefix}_{cutNo}_pose.py";
+            string directory_name = Path.GetDirectoryName(file_path);
+            string file_name_without_extension = Path.GetFileNameWithoutExtension(file_path);
+            string path = $"{directory_name}\\{prefix}_{cut_num}_pose.py";
             // create a bpy script for Blender.
             string space = "    ";
             string buff = "import bpy\n\n";
             buff += $"def keyframe_insert(frame: int) -> None:\n";
             buff += $"{space}ob = bpy.data.objects[\"{target}\"]\n";
             buff += $"{space}bpy.context.view_layer.objects.active = ob\n\n";
-            KeyFrame keyFrame = _keyFrameList.First();
-            keyFrame.PoseSet.Pose.ToList().ForEach(pose => {
+            KeyFrame keyframe = _keyframe_list.First();
+            keyframe.PoseSet.Pose.ToList().ForEach(pose => {
                 var euler = getRotationEuler(pose);
                 if (euler is not null) {
                     buff += $"{space}ob = bpy.context.active_object.pose.bones[\"{prefix}_{pose.name}\"]\n";
@@ -150,7 +152,7 @@ namespace MqoPoseToBpy.Lib {
             });
             // write a bpy script.
             File.WriteAllText(path, buff);
-            _keyFrameList.Clear();
+            _keyframe_list.Clear();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,11 +322,11 @@ namespace MqoPoseToBpy.Lib {
             /// Default constructor.
             /// Convert the file name to parameters.
             /// </summary>
-            /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
-            public RateAndLocation(string filePath) {
-                string fileName = filePath.Split('\\').Last();
-                Rate = int.Parse(fileName.Split('_')[1]);
-                Location = int.Parse(fileName.Split('_')[2].Replace(".xml", ""));
+            /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
+            public RateAndLocation(string file_path) {
+                string file_name = file_path.Split('\\').Last();
+                Rate = int.Parse(file_name.Split('_')[1]);
+                Location = int.Parse(file_name.Split('_')[2].Replace(".xml", ""));
             }
 
             ///////////////////////////////////////////////////////////////////////////////////////////

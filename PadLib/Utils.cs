@@ -3,10 +3,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
@@ -18,8 +20,9 @@ using System.Runtime.InteropServices;
 
 namespace PadLib {
     /// <summary>
-    /// @author h.adachi
+    /// utility class
     /// </summary>
+    /// <author>h.adachi (STUDIO MeowToon)</author>
     public class Utils {
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,68 +42,68 @@ namespace PadLib {
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // public static Methods [verb]
 
-        public static void SendKey(int key, bool isExtend = false) {
+        public static void SendKey(int key, bool is_extend = false) {
             if (!setActive()) return;
-            INPUT input = getKeyDownInput(key, isExtend);
+            INPUT input = getKeyDownInput(key, is_extend);
             SendInput(1, ref input, Marshal.SizeOf(input));
             Thread.Sleep(100); // wait
-            input = getKeyUpInput(input, isExtend);
+            input = getKeyUpInput(input, is_extend);
             SendInput(1, ref input, Marshal.SizeOf(input));
         }
 
-        public static void SendKeyWithShift(int key, bool isExtend = false) {
+        public static void SendKeyWithShift(int key, bool is_extend = false) {
             if (!setActive()) return;
-            INPUT input0 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
-            INPUT input1 = getKeyDownInput(key, isExtend);
+            INPUT input0 = getKeyDownInput(0x10, is_extend); // VK_SHIFT
+            INPUT input1 = getKeyDownInput(key, is_extend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
             SendInput(1, ref input1, Marshal.SizeOf(input1));
             Thread.Sleep(100); // wait
-            input1 = getKeyUpInput(input1, isExtend);
+            input1 = getKeyUpInput(input1, is_extend);
             SendInput(1, ref input1, Marshal.SizeOf(input1));
-            input0 = getKeyUpInput(input0, isExtend);
+            input0 = getKeyUpInput(input0, is_extend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
         }
 
-        public static void SendKeyWithCtrl(int key, bool isExtend = false) {
+        public static void SendKeyWithCtrl(int key, bool is_extend = false) {
             if (!setActive()) return;
-            INPUT input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
-            INPUT input1 = getKeyDownInput(key, isExtend);
+            INPUT input0 = getKeyDownInput(0x11, is_extend); // VK_CONTROL
+            INPUT input1 = getKeyDownInput(key, is_extend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
             SendInput(1, ref input1, Marshal.SizeOf(input1));
             Thread.Sleep(100); // wait
-            input1 = getKeyUpInput(input1, isExtend);
+            input1 = getKeyUpInput(input1, is_extend);
             SendInput(1, ref input1, Marshal.SizeOf(input1));
-            input0 = getKeyUpInput(input0, isExtend);
+            input0 = getKeyUpInput(input0, is_extend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
         }
 
-        public static void SendKeyWithAlt(int key, bool isExtend = false) {
+        public static void SendKeyWithAlt(int key, bool is_extend = false) {
             if (!setActive()) return;
-            INPUT input0 = getKeyDownInput(0x12, isExtend); // VK_MENU : Alt key
-            INPUT input1 = getKeyDownInput(key, isExtend);
+            INPUT input0 = getKeyDownInput(0x12, is_extend); // VK_MENU : Alt key
+            INPUT input1 = getKeyDownInput(key, is_extend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
             SendInput(1, ref input1, Marshal.SizeOf(input1));
             Thread.Sleep(100); // wait
-            input1 = getKeyUpInput(input1, isExtend);
+            input1 = getKeyUpInput(input1, is_extend);
             SendInput(1, ref input1, Marshal.SizeOf(input1));
-            input0 = getKeyUpInput(input0, isExtend);
+            input0 = getKeyUpInput(input0, is_extend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
         }
 
-        public static void SendKeyWithCtrlAndShift(int key, bool isExtend = false) {
+        public static void SendKeyWithCtrlAndShift(int key, bool is_extend = false) {
             if (!setActive()) return;
-            INPUT input0 = getKeyDownInput(0x11, isExtend); // VK_CONTROL
-            INPUT input1 = getKeyDownInput(0x10, isExtend); // VK_SHIFT
-            INPUT input2 = getKeyDownInput(key, isExtend);
+            INPUT input0 = getKeyDownInput(0x11, is_extend); // VK_CONTROL
+            INPUT input1 = getKeyDownInput(0x10, is_extend); // VK_SHIFT
+            INPUT input2 = getKeyDownInput(key, is_extend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
             SendInput(1, ref input1, Marshal.SizeOf(input1));
             SendInput(1, ref input2, Marshal.SizeOf(input2));
             Thread.Sleep(100); // wait
-            input2 = getKeyUpInput(input2, isExtend);
+            input2 = getKeyUpInput(input2, is_extend);
             SendInput(1, ref input2, Marshal.SizeOf(input2));
-            input1 = getKeyUpInput(input1, isExtend);
+            input1 = getKeyUpInput(input1, is_extend);
             SendInput(1, ref input1, Marshal.SizeOf(input1));
-            input0 = getKeyUpInput(input0, isExtend);
+            input0 = getKeyUpInput(input0, is_extend);
             SendInput(1, ref input0, Marshal.SizeOf(input0));
         }
 
@@ -117,21 +120,21 @@ namespace PadLib {
             return false;
         }
 
-        static INPUT getKeyDownInput(int key, bool isExtend) {
+        static INPUT getKeyDownInput(int key, bool is_extend) {
             return new INPUT {
                 type = INPUT_KEYBOARD,
                 ki = new KEYBDINPUT() {
                     wVk = (short) key,
                     wScan = 0,
-                    dwFlags = ((isExtend) ? KEYEVENTF_EXTENDEDKEY : 0x0) | KEYEVENTF_KEYDOWN,
+                    dwFlags = ((is_extend) ? KEYEVENTF_EXTENDEDKEY : 0x0) | KEYEVENTF_KEYDOWN,
                     time = 0,
                     dwExtraInfo = 0
                 },
             };
         }
 
-        static INPUT getKeyUpInput(INPUT input, bool isExtend) {
-            input.ki.dwFlags = ((isExtend) ? KEYEVENTF_EXTENDEDKEY : 0x0) | KEYEVENTF_KEYUP;
+        static INPUT getKeyUpInput(INPUT input, bool is_extend) {
+            input.ki.dwFlags = ((is_extend) ? KEYEVENTF_EXTENDEDKEY : 0x0) | KEYEVENTF_KEYUP;
             return input;
         }
 
