@@ -3,10 +3,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
@@ -22,7 +24,7 @@ namespace InvertPose.Lib {
     /// <summary>
     /// The context object for converting the pose XML files.
     /// </summary>
-    /// <author>Hiroyuki Adachi</author>
+    /// <author>h.adachi (STUDIO MeowToon)</author>
     public class Context {
 #nullable enable
 
@@ -32,12 +34,12 @@ namespace InvertPose.Lib {
         /// <summary>
         /// The list object that contains the original pose XML.
         /// </summary>
-        PoseSet _originalPoseSet;
+        PoseSet _original_poseset;
 
         /// <summary>
         /// The list object that is outputted as the inverted pose XML.
         /// </summary>
-        PoseSet _inversedPoseSet;
+        PoseSet _inversed_poseset;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Constructor
@@ -46,8 +48,8 @@ namespace InvertPose.Lib {
         /// Default constructor.
         /// </summary>
         public Context() {
-            _originalPoseSet = new();
-            _inversedPoseSet = new();
+            _original_poseset = new();
+            _inversed_poseset = new();
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,20 +58,20 @@ namespace InvertPose.Lib {
         /// <summary>
         /// Read the pose XML file of Metasequoia 4.
         /// </summary>
-        /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
-        public void Read(string filePath) {
+        /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
+        public void Read(string file_path) {
             XmlSerializer serializer = new(typeof(PoseSet));
             XmlReaderSettings settings = new() { CheckCharacters = false, };
-            using StreamReader streamReader1 = new(filePath, Encoding.UTF8);
-            using StreamReader streamReader2 = new(filePath, Encoding.UTF8);
-            using XmlReader xmlReader1 = XmlReader.Create(streamReader1, settings);
-            using XmlReader xmlReader2 = XmlReader.Create(streamReader2, settings);
-            PoseSet poseSet1 = serializer.Deserialize(xmlReader1) as PoseSet;
-            PoseSet poseSet2 = serializer.Deserialize(xmlReader2) as PoseSet;
-            if (poseSet1 is not null) {
-                if (poseSet2 is not null) {
-                    _originalPoseSet = poseSet1;
-                    _inversedPoseSet = poseSet2;
+            using StreamReader stream_reader1 = new(file_path, Encoding.UTF8);
+            using StreamReader stream_reader2 = new(file_path, Encoding.UTF8);
+            using XmlReader xml_reader1 = XmlReader.Create(stream_reader1, settings);
+            using XmlReader xml_reader2 = XmlReader.Create(stream_reader2, settings);
+            PoseSet poseset1 = serializer.Deserialize(xml_reader1) as PoseSet;
+            PoseSet poseset2 = serializer.Deserialize(xml_reader2) as PoseSet;
+            if (poseset1 is not null) {
+                if (poseset2 is not null) {
+                    _original_poseset = poseset1;
+                    _inversed_poseset = poseset2;
                     invert();
                 } else {
                     // TODO: ERROR LOG
@@ -82,18 +84,18 @@ namespace InvertPose.Lib {
         /// <summary>
         /// Write the inverted pose XML file of Metasequoia 4.
         /// </summary>
-        /// <param name="filePath">A pose XML file of Metasequoia 4 is provided.</param>
-        public void Write(string filePath) {
+        /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
+        public void Write(string file_path) {
             // create an inverted XML file path.
-            string directoryName = Path.GetDirectoryName(filePath);
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
-            string extension = Path.GetExtension(filePath);
-            string path = $"{directoryName}\\{fileNameWithoutExtension}_invert{extension}";
+            string directory_name = Path.GetDirectoryName(file_path);
+            string file_name_without_extension = Path.GetFileNameWithoutExtension(file_path);
+            string extension = Path.GetExtension(file_path);
+            string path = $"{directory_name}\\{file_name_without_extension}_invert{extension}";
             // convert the object to an XML string.
             XmlSerializer serializer = new(typeof(PoseSet));
-            using StringWriter stringWriter = new();
-            serializer.Serialize(stringWriter, _inversedPoseSet);
-            string xml = stringWriter.ToString();
+            using StringWriter string_writer = new();
+            serializer.Serialize(string_writer, _inversed_poseset);
+            string xml = string_writer.ToString();
             // To imitate Metasequoia 4 output.
             xml = xml.Replace("utf-16", "UTF-8");
             xml = xml.Replace("  ", "    ");
@@ -109,19 +111,19 @@ namespace InvertPose.Lib {
         /// Invert all poses.
         /// </summary>
         void invert() {
-            _originalPoseSet.Pose.ToList().ForEach(pose => {
+            _original_poseset.Pose.ToList().ForEach(pose => {
                 if (pose.name is "Hips" or "Spine" or "Chest" or "UpperChest" or "Neck" or "Head" or "Head_end" or 
                     "Hair" or "HatBase" or "HatMid" or "HatTop" or "SkirtBase" or "SkirtEnd" or
                     "TailBase" or "TailCenter" or "TailMid" or "TailTop") {
-                    PoseSetPose newPose = getNewPose();
-                    newPose.name = pose.name;
-                    newPose.rotP = pose.rotP;
-                    newPose.rotH = -(pose.rotH);
-                    newPose.rotB = -(pose.rotB);
+                    PoseSetPose new_pose = getNewPose();
+                    new_pose.name = pose.name;
+                    new_pose.rotP = pose.rotP;
+                    new_pose.rotH = -(pose.rotH);
+                    new_pose.rotB = -(pose.rotB);
                     if (pose.name is "Hips") {
-                        newPose.mvX = -pose.mvX;
+                        new_pose.mvX = -pose.mvX;
                     }
-                    applyInvertPose(newPose);
+                    applyInvertPose(new_pose);
                 }
                 if (pose.name is "LeftBustBase" or "RightBustBase" or
                     "RightUpperLeg" or "RightLowerLeg" or "LeftUpperLeg" or "LeftLowerLeg" or 
@@ -138,13 +140,13 @@ namespace InvertPose.Lib {
                     "RightMiddleProximal" or "RightMiddleIntermediate" or "RightMiddleDistal" or
                     "RightRingProximal" or "RightRingIntermediate" or "RightRingDistal" or
                     "RightLittleProximal" or "RightLittleIntermediate" or "RightLittleDistal") {
-                    PoseSetPose symmetricPose = getSymmetricPose(pose.name);
-                    PoseSetPose newPose = getNewPose();
-                    newPose.name = pose.name;
-                    newPose.rotP = symmetricPose.rotP;
-                    newPose.rotH = -(symmetricPose.rotH);
-                    newPose.rotB = -(symmetricPose.rotB);
-                    applyInvertPose(newPose);
+                    PoseSetPose symmetric_pose = getSymmetricPose(pose.name);
+                    PoseSetPose new_pose = getNewPose();
+                    new_pose.name = pose.name;
+                    new_pose.rotP = symmetric_pose.rotP;
+                    new_pose.rotH = -(symmetric_pose.rotH);
+                    new_pose.rotB = -(symmetric_pose.rotB);
+                    applyInvertPose(new_pose);
                 }
             });
         }
@@ -152,11 +154,11 @@ namespace InvertPose.Lib {
         /// <summary>
         /// Apply an inverted PoseSetPose object to the output list. 
         /// </summary>
-        /// <param name="invertedPose">An inverted PoseSetPose object is provided.</param>
-        void applyInvertPose(PoseSetPose invertedPose) {
-            List<PoseSetPose> newPoseList = _inversedPoseSet.Pose.ToList().Where(pose => pose.name != invertedPose.name).ToList();
-            newPoseList.Add(invertedPose);
-            _inversedPoseSet.Pose = newPoseList.ToArray();
+        /// <param name="inverted_pose">An inverted PoseSetPose object is provided.</param>
+        void applyInvertPose(PoseSetPose inverted_pose) {
+            List<PoseSetPose> new_pose_list = _inversed_poseset.Pose.ToList().Where(pose => pose.name != inverted_pose.name).ToList();
+            new_pose_list.Add(inverted_pose);
+            _inversed_poseset.Pose = new_pose_list.ToArray();
         }
 
         /// <summary>
@@ -172,7 +174,7 @@ namespace InvertPose.Lib {
             else if (search.Contains("right")) {
                 search = search.Replace("right", "left");
             }
-            PoseSetPose result = _originalPoseSet.Pose.ToList().Where(pose => flatten(pose.name).Equals(search)).First();
+            PoseSetPose result = _original_poseset.Pose.ToList().Where(pose => flatten(pose.name).Equals(search)).First();
             return result;
         }
 
@@ -205,8 +207,5 @@ namespace InvertPose.Lib {
             pose.scZ = 1.0000000m;
             return pose;
         }
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-        // inner Classes
     }
 }
