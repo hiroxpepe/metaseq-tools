@@ -55,13 +55,13 @@ namespace MqoPoseToBpy.Lib {
         /// </summary>
         /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
         public void Read(string file_path) {
-            XmlSerializer serializer = new(typeof(PoseSet));
+            XmlSerializer serializer = new(type: typeof(PoseSet));
             XmlReaderSettings settings = new() { CheckCharacters = false, };
-            using StreamReader stream_reader = new(file_path, Encoding.UTF8);
-            using var xml_reader = XmlReader.Create(stream_reader, settings);
+            using StreamReader stream_reader = new(path: file_path, encoding: Encoding.UTF8);
+            using var xml_reader = XmlReader.Create(input: stream_reader, settings: settings);
             _keyframe_list.Add(new KeyFrame(
-                new RateAndLocation(file_path),
-                (PoseSet) serializer.Deserialize(xml_reader)
+                RateAndLocation: new RateAndLocation(file_path),
+                PoseSet: (PoseSet) serializer.Deserialize(xml_reader)
             ));
         }
 
@@ -70,11 +70,14 @@ namespace MqoPoseToBpy.Lib {
         /// </summary>
         /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
         public void ReadOne(string file_path) {
-            XmlSerializer serializer = new(typeof(PoseSet));
+            XmlSerializer serializer = new(type: typeof(PoseSet));
             XmlReaderSettings settings = new() { CheckCharacters = false, };
-            using StreamReader stream_reader = new(file_path, Encoding.UTF8);
-            using var xmlReader = XmlReader.Create(stream_reader, settings);
-            _keyframe_list.Add(new KeyFrame(null, (PoseSet) serializer.Deserialize(xmlReader)));
+            using StreamReader stream_reader = new(path: file_path, encoding: Encoding.UTF8);
+            using var xmlReader = XmlReader.Create(input: stream_reader, settings: settings);
+            _keyframe_list.Add(new KeyFrame(
+                RateAndLocation: null, 
+                PoseSet: (PoseSet) serializer.Deserialize(xmlReader))
+            );
         }
 
         /// <summary>
@@ -166,46 +169,46 @@ namespace MqoPoseToBpy.Lib {
         RotationEuler getRotationEuler(PoseSetPose pose) {
             RotationEuler euler = getPattern(pose.name) switch {
                 1 => new(
-                    toRadian(decimal.ToDouble(pose.rotP)),
-                    toRadian(decimal.ToDouble(pose.rotH)),
-                    toRadian(decimal.ToDouble(pose.rotB)),
-                    "ZXY"
+                    X: toRadian(decimal.ToDouble(pose.rotP)),
+                    Y: toRadian(decimal.ToDouble(pose.rotH)),
+                    Z: toRadian(decimal.ToDouble(pose.rotB)),
+                    Mode: "ZXY"
                 ),
                 2 => new(
-                    -toRadian(decimal.ToDouble(pose.rotP)),
-                    -toRadian(decimal.ToDouble(pose.rotH)),
-                    toRadian(decimal.ToDouble(pose.rotB)),
-                    "ZXY"
+                    X: -toRadian(decimal.ToDouble(pose.rotP)),
+                    Y: -toRadian(decimal.ToDouble(pose.rotH)),
+                    Z: toRadian(decimal.ToDouble(pose.rotB)),
+                    Mode: "ZXY"
                 ),
                 3 => new(
-                    toRadian(decimal.ToDouble(pose.rotP)),
-                    -toRadian(decimal.ToDouble(pose.rotH)),
-                    -toRadian(decimal.ToDouble(pose.rotB)),
-                    "ZXY"
+                    X: toRadian(decimal.ToDouble(pose.rotP)),
+                    Y: -toRadian(decimal.ToDouble(pose.rotH)),
+                    Z: -toRadian(decimal.ToDouble(pose.rotB)),
+                    Mode: "ZXY"
                 ),
                 4 => new(
-                    -toRadian(decimal.ToDouble(pose.rotH)),
-                    toRadian(decimal.ToDouble(pose.rotP)),
-                    toRadian(decimal.ToDouble(pose.rotB)),
-                    "ZYX"
+                    X: -toRadian(decimal.ToDouble(pose.rotH)),
+                    Y: toRadian(decimal.ToDouble(pose.rotP)),
+                    Z: toRadian(decimal.ToDouble(pose.rotB)),
+                    Mode: "ZYX"
                 ),
                 5 => new(
-                    toRadian(decimal.ToDouble(pose.rotH)),
-                    -toRadian(decimal.ToDouble(pose.rotP)),
-                    toRadian(decimal.ToDouble(pose.rotB)),
-                    "ZYX"
+                    X: toRadian(decimal.ToDouble(pose.rotH)),
+                    Y: -toRadian(decimal.ToDouble(pose.rotP)),
+                    Z: toRadian(decimal.ToDouble(pose.rotB)),
+                    Mode: "ZYX"
                 ),
                 6 => new(
-                    toRadian(decimal.ToDouble(pose.rotP)),
-                    -toRadian(decimal.ToDouble(pose.rotH)),
-                    toRadian(decimal.ToDouble(pose.rotB)),
-                    "ZXY"
+                    X: toRadian(decimal.ToDouble(pose.rotP)),
+                    Y: -toRadian(decimal.ToDouble(pose.rotH)),
+                    Z: toRadian(decimal.ToDouble(pose.rotB)),
+                    Mode: "ZXY"
                 ),
                 7 => new(
-                    toRadian(decimal.ToDouble(pose.rotP)),
-                    -toRadian(decimal.ToDouble(pose.rotB)),
-                    toRadian(decimal.ToDouble(pose.rotH)),
-                    "ZXY"
+                    X: toRadian(decimal.ToDouble(pose.rotP)),
+                    Y: -toRadian(decimal.ToDouble(pose.rotB)),
+                    Z: toRadian(decimal.ToDouble(pose.rotH)),
+                    Mode: "ZXY"
                 ),
                 0 or _ => null
             };
