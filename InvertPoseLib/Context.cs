@@ -19,10 +19,11 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using static System.IO.File;
 
 namespace InvertPose.Lib {
     /// <summary>
-    /// The context object for converting the pose XML files.
+    /// context object for converting the pose XML files.
     /// </summary>
     /// <author>h.adachi (STUDIO MeowToon)</author>
     public class Context {
@@ -32,12 +33,12 @@ namespace InvertPose.Lib {
         // Fields
 
         /// <summary>
-        /// The list object that contains the original pose XML.
+        /// list object that contains the original pose XML.
         /// </summary>
         PoseSet _original_poseset;
 
         /// <summary>
-        /// The list object that is outputted as the inverted pose XML.
+        /// list object that is outputted as the inverted pose XML.
         /// </summary>
         PoseSet _inversed_poseset;
 
@@ -45,7 +46,7 @@ namespace InvertPose.Lib {
         // Constructor
 
         /// <summary>
-        /// Default constructor.
+        /// default constructor.
         /// </summary>
         public Context() {
             _original_poseset = new();
@@ -56,59 +57,55 @@ namespace InvertPose.Lib {
         // public Methods [verb]
 
         /// <summary>
-        /// Read the pose XML file of Metasequoia 4.
+        /// reads the pose XML file of Metasequoia 4.
         /// </summary>
         /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
         public void Read(string file_path) {
-            XmlSerializer serializer = new(typeof(PoseSet));
+            XmlSerializer serializer = new(type: typeof(PoseSet));
             XmlReaderSettings settings = new() { CheckCharacters = false, };
             using StreamReader stream_reader1 = new(file_path, Encoding.UTF8);
             using StreamReader stream_reader2 = new(file_path, Encoding.UTF8);
-            using XmlReader xml_reader1 = XmlReader.Create(stream_reader1, settings);
-            using XmlReader xml_reader2 = XmlReader.Create(stream_reader2, settings);
-            PoseSet poseset1 = serializer.Deserialize(xml_reader1) as PoseSet;
-            PoseSet poseset2 = serializer.Deserialize(xml_reader2) as PoseSet;
-            if (poseset1 is not null) {
-                if (poseset2 is not null) {
-                    _original_poseset = poseset1;
-                    _inversed_poseset = poseset2;
-                    invert();
-                } else {
-                    // TODO: ERROR LOG
-                }
+            using XmlReader xml_reader1 = XmlReader.Create(input: stream_reader1, settings: settings);
+            using XmlReader xml_reader2 = XmlReader.Create(input: stream_reader2, settings: settings);
+            PoseSet poseset1 = serializer.Deserialize(xmlReader: xml_reader1) as PoseSet;
+            PoseSet poseset2 = serializer.Deserialize(xmlReader: xml_reader2) as PoseSet;
+            if (poseset1 is not null && poseset2 is not null) {
+                _original_poseset = poseset1;
+                _inversed_poseset = poseset2;
+                invert();
             } else {
                 // TODO: ERROR LOG
             }
         }
 
         /// <summary>
-        /// Write the inverted pose XML file of Metasequoia 4.
+        /// writes the inverted pose XML file of Metasequoia 4.
         /// </summary>
         /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
         public void Write(string file_path) {
             // create an inverted XML file path.
-            string directory_name = Path.GetDirectoryName(file_path);
-            string file_name_without_extension = Path.GetFileNameWithoutExtension(file_path);
-            string extension = Path.GetExtension(file_path);
+            string directory_name = Path.GetDirectoryName(path: file_path);
+            string file_name_without_extension = Path.GetFileNameWithoutExtension(path: file_path);
+            string extension = Path.GetExtension(path: file_path);
             string path = $"{directory_name}\\{file_name_without_extension}_invert{extension}";
             // convert the object to an XML string.
-            XmlSerializer serializer = new(typeof(PoseSet));
+            XmlSerializer serializer = new(type: typeof(PoseSet));
             using StringWriter string_writer = new();
-            serializer.Serialize(string_writer, _inversed_poseset);
+            serializer.Serialize(textWriter: string_writer, o: _inversed_poseset);
             string xml = string_writer.ToString();
             // To imitate Metasequoia 4 output.
-            xml = xml.Replace("utf-16", "UTF-8");
-            xml = xml.Replace("  ", "    ");
-            xml = xml.Replace(" /", "/");
+            xml = xml.Replace(oldValue: "utf-16", newValue: "UTF-8");
+            xml = xml.Replace(oldValue: "  ", newValue: "    ");
+            xml = xml.Replace(oldValue: " /", newValue: "/");
             xml = $"{xml}\r\n";
-            File.WriteAllText(path, xml);
+            WriteAllText(path: path, contents: xml);
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // private Methods [verb]
 
         /// <summary>
-        /// Invert all poses.
+        /// inverts all poses.
         /// </summary>
         void invert() {
             _original_poseset.Pose.ToList().ForEach(pose => {
@@ -123,7 +120,7 @@ namespace InvertPose.Lib {
                     if (pose.name is "Hips") {
                         new_pose.mvX = -pose.mvX;
                     }
-                    applyInvertPose(new_pose);
+                    applyInvertPose(inverted_pose: new_pose);
                 }
                 if (pose.name is "LeftBustBase" or "RightBustBase" or
                     "RightUpperLeg" or "RightLowerLeg" or "LeftUpperLeg" or "LeftLowerLeg" or 
@@ -140,46 +137,46 @@ namespace InvertPose.Lib {
                     "RightMiddleProximal" or "RightMiddleIntermediate" or "RightMiddleDistal" or
                     "RightRingProximal" or "RightRingIntermediate" or "RightRingDistal" or
                     "RightLittleProximal" or "RightLittleIntermediate" or "RightLittleDistal") {
-                    PoseSetPose symmetric_pose = getSymmetricPose(pose.name);
+                    PoseSetPose symmetric_pose = getSymmetricPose(name: pose.name);
                     PoseSetPose new_pose = getNewPose();
                     new_pose.name = pose.name;
                     new_pose.rotP = symmetric_pose.rotP;
                     new_pose.rotH = -(symmetric_pose.rotH);
                     new_pose.rotB = -(symmetric_pose.rotB);
-                    applyInvertPose(new_pose);
+                    applyInvertPose(inverted_pose: new_pose);
                 }
             });
         }
 
         /// <summary>
-        /// Apply an inverted PoseSetPose object to the output list. 
+        /// applies inverted PoseSetPose objects to the output list.
         /// </summary>
         /// <param name="inverted_pose">An inverted PoseSetPose object is provided.</param>
         void applyInvertPose(PoseSetPose inverted_pose) {
-            List<PoseSetPose> new_pose_list = _inversed_poseset.Pose.ToList().Where(pose => pose.name != inverted_pose.name).ToList();
-            new_pose_list.Add(inverted_pose);
+            List<PoseSetPose> new_pose_list = _inversed_poseset.Pose.ToList().Where(predicate: x => x.name != inverted_pose.name).ToList();
+            new_pose_list.Add(item: inverted_pose);
             _inversed_poseset.Pose = new_pose_list.ToArray();
         }
 
         /// <summary>
-        /// Get the symmetric PoseSetPose object.
+        /// gets the symmetric PoseSetPose object.
         /// </summary>
         /// <param name="name">A name of bone name is provided.</param>
         /// <returns>Return a symmetric PoseSetPose object.</returns>
         PoseSetPose getSymmetricPose(string name) {
-            string search = flatten(name);
-            if (search.Contains("left")) {
-                search = search.Replace("left", "right");
+            string search_name = flatten(name);
+            if (search_name.Contains(value: "left")) {
+                search_name = search_name.Replace(oldValue: "left", newValue: "right");
             } 
-            else if (search.Contains("right")) {
-                search = search.Replace("right", "left");
+            else if (search_name.Contains(value: "right")) {
+                search_name = search_name.Replace(oldValue: "right", newValue: "left");
             }
-            PoseSetPose result = _original_poseset.Pose.ToList().Where(pose => flatten(pose.name).Equals(search)).First();
+            PoseSetPose result = _original_poseset.Pose.ToList().Where(predicate: x => flatten(x.name).Equals(search_name)).First();
             return result;
         }
 
         /// <summary>
-        /// Flatten the bone name.
+        /// flattens the bone name.
         /// </summary>
         /// <param name="name">A bone name is provided.</param>
         /// <returns>Return the flatted bone name.</returns>
@@ -190,22 +187,22 @@ namespace InvertPose.Lib {
         }
 
         /// <summary>
-        /// Get a new PoseSetPose object.
+        /// gets a new PoseSetPose object.
         /// </summary>
         /// <returns>Return a new PoseSetPose object.</returns>
         PoseSetPose getNewPose() {
-            PoseSetPose pose = new();
-            pose.name = "";
-            pose.mvX = 0.0000000m;
-            pose.mvY = 0.0000000m;
-            pose.mvZ = 0.0000000m;
-            pose.rotB = 0.0000000m;
-            pose.rotH = 0.0000000m;
-            pose.rotP = 0.0000000m;
-            pose.scX = 1.0000000m;
-            pose.scY = 1.0000000m;
-            pose.scZ = 1.0000000m;
-            return pose;
+            return new() {
+                name = string.Empty,
+                mvX = 0.0000000m,
+                mvY = 0.0000000m,
+                mvZ = 0.0000000m,
+                rotB = 0.0000000m,
+                rotH = 0.0000000m,
+                rotP = 0.0000000m,
+                scX = 1.0000000m,
+                scY = 1.0000000m,
+                scZ = 1.0000000m
+            };
         }
     }
 }

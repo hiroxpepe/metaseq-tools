@@ -20,6 +20,11 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using static System.Environment;
+using static System.IO.File;
+using static System.IO.Path;
+using static System.Math;
+using static System.Xml.XmlReader;
 
 namespace MqoPoseToBpy.Lib {
     /// <summary>
@@ -58,10 +63,10 @@ namespace MqoPoseToBpy.Lib {
             XmlSerializer serializer = new(type: typeof(PoseSet));
             XmlReaderSettings settings = new() { CheckCharacters = false, };
             using StreamReader stream_reader = new(path: file_path, encoding: Encoding.UTF8);
-            using var xml_reader = XmlReader.Create(input: stream_reader, settings: settings);
-            _keyframe_list.Add(new KeyFrame(
+            using XmlReader xml_reader = Create(input: stream_reader, settings: settings);
+            _keyframe_list.Add(item: new KeyFrame(
                 RateAndLocation: new RateAndLocation(file_path),
-                PoseSet: (PoseSet) serializer.Deserialize(xml_reader)
+                PoseSet: (PoseSet) serializer.Deserialize(xmlReader: xml_reader)
             ));
         }
 
@@ -73,10 +78,10 @@ namespace MqoPoseToBpy.Lib {
             XmlSerializer serializer = new(type: typeof(PoseSet));
             XmlReaderSettings settings = new() { CheckCharacters = false, };
             using StreamReader stream_reader = new(path: file_path, encoding: Encoding.UTF8);
-            using var xmlReader = XmlReader.Create(input: stream_reader, settings: settings);
-            _keyframe_list.Add(new KeyFrame(
+            using XmlReader xml_reader = Create(input: stream_reader, settings: settings);
+            _keyframe_list.Add(item: new KeyFrame(
                 RateAndLocation: null, 
-                PoseSet: (PoseSet) serializer.Deserialize(xmlReader))
+                PoseSet: (PoseSet) serializer.Deserialize(xmlReader: xml_reader))
             );
         }
 
@@ -87,23 +92,23 @@ namespace MqoPoseToBpy.Lib {
             string buff = "import bpy\n\n";
             int fps = 0, frame_end = 0;
             _keyframe_list.ForEach(keyFrame => {
-                keyFrame.PoseSet.Pose.ToList().ForEach(pose => {
-                    var euler = getRotationEuler(pose);
+                keyFrame.PoseSet.Pose.ToList().ForEach(action: x => {
+                    RotationEuler euler = getRotationEuler(pose: x);
                     if (euler is not null) {
-                        buff += $"ob = bpy.context.active_object.pose.bones['{pose.name}']\n";
+                        buff += $"ob = bpy.context.active_object.pose.bones['{x.name}']\n";
                         buff += $"ob.rotation_mode = '{euler.Mode}'\n";
                         buff += $"ob.rotation_euler.x = {euler.X}\n";
                         buff += $"ob.rotation_euler.y = {euler.Y}\n";
                         buff += $"ob.rotation_euler.z = {euler.Z}\n";
-                        buff += $"ob.keyframe_insert('rotation_euler', frame = {keyFrame.RateAndLocation.Location}, group = '{pose.name}')\n\n";
+                        buff += $"ob.keyframe_insert('rotation_euler', frame = {keyFrame.RateAndLocation.Location}, group = '{x.name}')\n\n";
                     }
-                    var position = getPosition(pose);
+                    Position position = getPosition(pose: x);
                     if (position is not null) {
-                        buff += $"ob = bpy.context.active_object.pose.bones['{pose.name}']\n";
+                        buff += $"ob = bpy.context.active_object.pose.bones['{x.name}']\n";
                         buff += $"ob.location.x = {position.X}\n";
                         buff += $"ob.location.y = {position.Y}\n";
                         buff += $"ob.location.z = {position.Z}\n";
-                        buff += $"ob.keyframe_insert('location', frame = {keyFrame.RateAndLocation.Location}, group = '{pose.name}')\n\n";
+                        buff += $"ob.keyframe_insert('location', frame = {keyFrame.RateAndLocation.Location}, group = '{x.name}')\n\n";
                     }
                 });
                 fps = keyFrame.RateAndLocation.Rate;
@@ -111,7 +116,7 @@ namespace MqoPoseToBpy.Lib {
             });
             buff += $"bpy.context.scene.render.fps = {fps}\n";
             buff += $"bpy.data.scenes['Scene'].frame_end = {frame_end}\n";
-            File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/metaseq_animation.py", buff);
+            WriteAllText(path: $"{GetFolderPath(folder: SpecialFolder.DesktopDirectory)}/metaseq_animation.py", contents: buff);
             _keyframe_list.Clear();
         }
 
@@ -124,8 +129,8 @@ namespace MqoPoseToBpy.Lib {
         /// <param name="file_path">A file path string to write a file is provided.</param>
         public void WriteOne(string target, string prefix, int cut_num, string file_path) {
             // create a file path to output.
-            string directory_name = Path.GetDirectoryName(file_path);
-            string file_name_without_extension = Path.GetFileNameWithoutExtension(file_path);
+            string directory_name = GetDirectoryName(path: file_path);
+            string file_name_without_extension = GetFileNameWithoutExtension(path: file_path);
             string path = $"{directory_name}\\{prefix}_{cut_num}_pose.py";
             // create a bpy script for Blender.
             string space = "    ";
@@ -134,27 +139,27 @@ namespace MqoPoseToBpy.Lib {
             buff += $"{space}ob = bpy.data.objects[\"{target}\"]\n";
             buff += $"{space}bpy.context.view_layer.objects.active = ob\n\n";
             KeyFrame keyframe = _keyframe_list.First();
-            keyframe.PoseSet.Pose.ToList().ForEach(pose => {
-                var euler = getRotationEuler(pose);
+            keyframe.PoseSet.Pose.ToList().ForEach(action: x => {
+                RotationEuler euler = getRotationEuler(pose: x);
                 if (euler is not null) {
-                    buff += $"{space}ob = bpy.context.active_object.pose.bones[\"{prefix}_{pose.name}\"]\n";
+                    buff += $"{space}ob = bpy.context.active_object.pose.bones[\"{prefix}_{x.name}\"]\n";
                     buff += $"{space}ob.rotation_mode = \"{euler.Mode}\"\n";
                     buff += $"{space}ob.rotation_euler.x = {euler.X}\n";
                     buff += $"{space}ob.rotation_euler.y = {euler.Y}\n";
                     buff += $"{space}ob.rotation_euler.z = {euler.Z}\n";
-                    buff += $"{space}ob.keyframe_insert(\"rotation_euler\", frame=frame, group=\"{prefix}_{pose.name}\")\n\n";
+                    buff += $"{space}ob.keyframe_insert(\"rotation_euler\", frame=frame, group=\"{prefix}_{x.name}\")\n\n";
                 }
-                var position = getPosition(pose);
+                Position position = getPosition(pose: x);
                 if (position is not null) {
-                    buff += $"{space}ob = bpy.context.active_object.pose.bones[\"{prefix}_{pose.name}\"]\n";
+                    buff += $"{space}ob = bpy.context.active_object.pose.bones[\"{prefix}_{x.name}\"]\n";
                     buff += $"{space}ob.location.x = {position.X}\n";
                     buff += $"{space}ob.location.y = {position.Y}\n";
                     buff += $"{space}ob.location.z = {position.Z}\n";
-                    buff += $"{space}ob.keyframe_insert(\"location\", frame=frame, group=\"{prefix}_{pose.name}\")\n\n";
+                    buff += $"{space}ob.keyframe_insert(\"location\", frame=frame, group=\"{prefix}_{x.name}\")\n\n";
                 }
             });
             // write a bpy script.
-            File.WriteAllText(path, buff);
+            WriteAllText(path: path, contents: buff);
             _keyframe_list.Clear();
         }
 
@@ -261,11 +266,11 @@ namespace MqoPoseToBpy.Lib {
         /// <returns>Return a Position object.</returns>
         Position getPosition(PoseSetPose pose) {
             if (pose.name is "Hips") {
-                Position position = new();
-                position.X = decimal.ToDouble(pose.mvX);
-                position.Y = decimal.ToDouble(pose.mvY);
-                position.Z = decimal.ToDouble(pose.mvZ);
-                return position;
+                return new() {
+                    X = decimal.ToDouble(pose.mvX),
+                    Y = decimal.ToDouble(pose.mvY),
+                    Z = decimal.ToDouble(pose.mvZ)
+                };
             }
             return null;
         }
@@ -276,7 +281,7 @@ namespace MqoPoseToBpy.Lib {
         /// <param name="angle">An angle is provided.</param>
         /// <returns>Return a radian value of the angle.</returns>
         double toRadian(double angle) {
-            return (double) (angle * Math.PI / 180); // Blender script angles are set in radian.
+            return (double) (angle * PI / 180); // Blender script angles are set in radian.
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -327,9 +332,9 @@ namespace MqoPoseToBpy.Lib {
             /// </summary>
             /// <param name="file_path">A pose XML file of Metasequoia 4 is provided.</param>
             public RateAndLocation(string file_path) {
-                string file_name = file_path.Split('\\').Last();
-                Rate = int.Parse(file_name.Split('_')[1]);
-                Location = int.Parse(file_name.Split('_')[2].Replace(".xml", ""));
+                string file_name = file_path.Split(separator: '\\').Last();
+                Rate = int.Parse(s: file_name.Split(separator: '_')[1]);
+                Location = int.Parse(s: file_name.Split(separator: '_')[2].Replace(oldValue: ".xml", newValue: ""));
             }
 
             ///////////////////////////////////////////////////////////////////////////////////////////

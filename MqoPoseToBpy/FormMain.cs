@@ -42,7 +42,6 @@ namespace MqoPoseToBpy {
         /// </summary>
         public FormMain() {
             _context = new();
-
             InitializeComponent();
         }
 
@@ -55,31 +54,30 @@ namespace MqoPoseToBpy {
         /// <param name="sender">The event publisher is provided.</param>
         /// <param name="e">The event parameters are provided.</param>
         async void buttonFileDrop_DragDrop(object sender, DragEventArgs e) {
-            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
-                && e.Data.GetDataPresent(DataFormats.FileDrop, true)) {
-                var data = e.Data.GetData(DataFormats.FileDrop, true) as string[];
+            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy && e.Data.GetDataPresent(format: DataFormats.FileDrop, autoConvert: true)) {
+                string[] data = e.Data.GetData(format: DataFormats.FileDrop, autoConvert: true) as string[];
                 if (data is not null) {
                     // old version
                     if (data.Length > 1) {
-                        foreach (string filePath in data) {
-                            await Task.Run(() => _context.Read(filePath));
+                        foreach (string file_path in data) {
+                            await Task.Run(action: () => _context.Read(file_path: file_path));
                         }
-                        await Task.Run(() => _context.Write());
+                        await Task.Run(action: () => _context.Write());
                     // new version
                     } else if (data.Length == 1 &&
-                        !string.IsNullOrEmpty(_textBoxTarget.Text) &&
-                        !string.IsNullOrEmpty(_textBoxPrefix.Text) &&
-                        !string.IsNullOrEmpty(_textBoxCutNo.Text)) {
-                        string filePath = data[0];
-                        await Task.Run(() => _context.ReadOne(filePath));
-                        await Task.Run(() => _context.WriteOne(
-                            _textBoxTarget.Text,
-                            _textBoxPrefix.Text, 
-                            int.Parse(_textBoxCutNo.Text), 
-                            filePath)
-                        );
+                        !string.IsNullOrEmpty(value: _textBoxTarget.Text) &&
+                        !string.IsNullOrEmpty(value: _textBoxPrefix.Text) &&
+                        !string.IsNullOrEmpty(value: _textBoxCutNo.Text)) {
+                        string file_path = data[0];
+                        await Task.Run(action: () => _context.ReadOne(file_path: file_path));
+                        await Task.Run(action: () => _context.WriteOne(
+                            target: _textBoxTarget.Text,
+                            prefix: _textBoxPrefix.Text, 
+                            cut_num: int.Parse(s: _textBoxCutNo.Text), 
+                            file_path: file_path
+                        ));
                     } else {
-                        MessageBox.Show("Requires parameters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        MessageBox.Show(text: "Requires parameters.", caption: "Error", buttons: MessageBoxButtons.OK, icon: MessageBoxIcon.Stop);
                     }
                 }
             }
@@ -91,8 +89,7 @@ namespace MqoPoseToBpy {
         /// <param name="sender">The event publisher is provided.</param>
         /// <param name="e">The event parameters are provided.</param>
         void buttonFileDrop_DragEnter(object sender, DragEventArgs e) {
-            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
-                 && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: to add a validator.
+            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy && e.Data.GetDataPresent(format: DataFormats.FileDrop)) { // FIXME: to add a validator.
                 e.Effect = DragDropEffects.Copy;
             } else {
                 e.Effect = DragDropEffects.None;
@@ -105,8 +102,7 @@ namespace MqoPoseToBpy {
         /// <param name="sender">The event publisher is provided.</param>
         /// <param name="e">The event parameters are provided.</param>
         void buttonFileDrop_DragOver(object sender, DragEventArgs e) {
-            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
-                && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: to add a validator.
+            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy && e.Data.GetDataPresent(format: DataFormats.FileDrop)) { // FIXME: to add a validator.
                 e.Effect = DragDropEffects.Copy;
             } else {
                 e.Effect = DragDropEffects.None;

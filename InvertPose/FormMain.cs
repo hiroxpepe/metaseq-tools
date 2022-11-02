@@ -42,7 +42,6 @@ namespace InvertPose {
         /// </summary>
         public FormMain() {
             _context = new();
-
             InitializeComponent();
         }
 
@@ -55,12 +54,11 @@ namespace InvertPose {
         /// <param name="sender">The event publisher is provided.</param>
         /// <param name="e">The event parameters are provided.</param>
         async void buttonFileDrop_DragDrop(object sender, DragEventArgs e) {
-            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
-                && e.Data.GetDataPresent(DataFormats.FileDrop, true)) {
-                var data = e.Data.GetData(DataFormats.FileDrop, true) as string[];
+            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy && e.Data.GetDataPresent(format: DataFormats.FileDrop, autoConvert: true)) {
+                string[] data = e.Data.GetData(format: DataFormats.FileDrop, autoConvert: true) as string[];
                 if (data is not null) {
-                    await Task.Run(() => _context.Read(data[0]));
-                    await Task.Run(() => _context.Write(data[0]));
+                    await Task.Run(action: () => _context.Read(file_path: data[0]));
+                    await Task.Run(action: () => _context.Write(file_path: data[0]));
                 }
             }
         }
@@ -71,8 +69,7 @@ namespace InvertPose {
         /// <param name="sender">The event publisher is provided.</param>
         /// <param name="e">The event parameters are provided.</param>
         void buttonFileDrop_DragEnter(object sender, DragEventArgs e) {
-            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
-                 && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: to add a validator.
+            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy && e.Data.GetDataPresent(format: DataFormats.FileDrop)) { // FIXME: to add a validator.
                 e.Effect = DragDropEffects.Copy;
             } else {
                 e.Effect = DragDropEffects.None;
@@ -85,8 +82,7 @@ namespace InvertPose {
         /// <param name="sender">The event publisher is provided.</param>
         /// <param name="e">The event parameters are provided.</param>
         void buttonFileDrop_DragOver(object sender, DragEventArgs e) {
-            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy
-                && e.Data.GetDataPresent(DataFormats.FileDrop)) { // FIXME: to add a validator.
+            if ((e.AllowedEffect & DragDropEffects.Copy) is DragDropEffects.Copy && e.Data.GetDataPresent(format: DataFormats.FileDrop)) { // FIXME: to add a validator.
                 e.Effect = DragDropEffects.Copy;
             } else {
                 e.Effect = DragDropEffects.None;
