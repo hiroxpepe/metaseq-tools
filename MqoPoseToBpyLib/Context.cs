@@ -115,6 +115,7 @@ namespace MqoPoseToBpy.Lib {
                 frame_end = keyFrame.RateAndLocation.Location;
             });
             buff += $"bpy.context.scene.render.fps = {fps}\n";
+            buff += $"bpy.context.scene.frame_preview_end = {frame_end}\n";
             buff += $"bpy.data.scenes['Scene'].frame_end = {frame_end}\n";
             WriteAllText(path: $"{GetFolderPath(folder: SpecialFolder.DesktopDirectory)}/metaseq_animation.py", contents: buff);
             _keyframe_list.Clear();
